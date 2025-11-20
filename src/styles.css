@@ -1,3 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
-
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
+
+:root {
+  --font-sans: 'Outfit', sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  @apply bg-slate-50 text-slate-900 antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-indigo-200 rounded-full hover:bg-indigo-300 transition-colors;
+}
