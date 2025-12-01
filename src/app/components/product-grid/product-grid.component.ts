@@ -19,31 +19,30 @@ import { ProductCardComponent } from '../product-card/product-card.component';
     PaginationComponent,
   ],
   template: `
-    <section class="py-12 bg-white">
+    <!-- Page Header / Banner -->
+    <section class="bg-[#F9F9F7] py-16 mb-12">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="mb-10">
-          <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Shop</h2>
-          <div class="flex items-center gap-2 text-sm text-slate-500">
-            <span>Home</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-3 w-3"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+          <!-- Title & Breadcrumbs -->
+          <div class="text-center md:text-left">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Shop</h1>
+            <div
+              class="flex items-center justify-center md:justify-start gap-2 text-sm text-slate-500"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-            <span>Shop</span>
+              <span class="hover:text-slate-900 cursor-pointer">Home</span>
+              <span class="text-slate-300">/</span>
+              <span class="text-slate-900">Shop</span>
+            </div>
           </div>
-        </div>
 
+          <!-- Optional: Banner Image Placeholder (to match the look) -->
+          <!-- <div class="hidden md:block w-1/2 h-64 bg-slate-200 rounded-lg"></div> -->
+        </div>
+      </div>
+    </section>
+
+    <section class="pb-12 bg-white">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Filter Bar -->
         <div
           class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-10 pb-6 border-b border-slate-100"

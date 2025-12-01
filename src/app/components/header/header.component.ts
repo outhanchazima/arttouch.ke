@@ -17,36 +17,38 @@ import { WishlistService } from '../../services/wishlist.service';
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
           <!-- Logo -->
-          <div class="shrink-0 cursor-pointer hover:opacity-80 transition-opacity" routerLink="/">
-            <span
-              class="text-2xl font-bold bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
-            >
-              ArtTouch
-            </span>
+          <div class="shrink-0 cursor-pointer" routerLink="/">
+            <span class="text-3xl font-bold text-slate-900 tracking-tight"> ArtTouch </span>
           </div>
 
           <!-- Desktop Navigation -->
           <nav class="hidden md:flex space-x-8">
-            <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors"
+            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
               >Home</a
             >
-            <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors"
+            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
               >Shop</a
             >
-            <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors"
-              >Collections</a
+            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
+              >Products</a
             >
-            <a href="#" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors"
-              >About</a
+            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
+              >Pages</a
+            >
+            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
+              >Blog</a
+            >
+            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
+              >Elements</a
             >
           </nav>
 
-          <!-- Right Section: Search & Cart -->
-          <div class="flex items-center space-x-4">
-            <!-- Search Button -->
+          <!-- Right Section: Icons -->
+          <div class="flex items-center space-x-2">
+            <!-- Search -->
             <button
               (click)="toggleSearch()"
-              class="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"
+              class="p-2 text-slate-900 hover:text-slate-600 transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,9 +66,27 @@ import { WishlistService } from '../../services/wishlist.service';
               </svg>
             </button>
 
-            <!-- Wishlist Button -->
+            <!-- User (Account) -->
+            <button class="p-2 text-slate-900 hover:text-slate-600 transition-colors">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+            </button>
+
+            <!-- Wishlist -->
             <button
-              class="relative p-2 text-slate-500 hover:text-pink-600 hover:bg-pink-50 rounded-full transition-all group"
+              class="relative p-2 text-slate-900 hover:text-slate-600 transition-colors group"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +104,7 @@ import { WishlistService } from '../../services/wishlist.service';
               </svg>
               @if (wishlistService.items().length > 0) {
               <span
-                class="absolute top-1 right-1 h-4 w-4 bg-pink-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full group-hover:scale-110 transition-transform"
+                class="absolute top-0 right-0 h-4 w-4 bg-black text-white text-[10px] font-bold flex items-center justify-center rounded-full"
               >
                 {{ wishlistService.items().length }}
               </span>
@@ -94,7 +114,7 @@ import { WishlistService } from '../../services/wishlist.service';
             <!-- Cart Button -->
             <button
               (click)="cartService.toggleCart()"
-              class="relative p-2 text-slate-500 hover:text-pink-600 hover:bg-pink-50 rounded-full transition-all group"
+              class="relative p-2 text-slate-900 hover:text-slate-600 transition-colors group"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +132,7 @@ import { WishlistService } from '../../services/wishlist.service';
               </svg>
               @if (cartService.count() > 0) {
               <span
-                class="absolute top-1 right-1 h-4 w-4 bg-pink-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full group-hover:scale-110 transition-transform"
+                class="absolute top-0 right-0 h-4 w-4 bg-black text-white text-[10px] font-bold flex items-center justify-center rounded-full"
               >
                 {{ cartService.count() }}
               </span>
