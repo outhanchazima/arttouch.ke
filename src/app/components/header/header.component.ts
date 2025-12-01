@@ -11,11 +11,9 @@ import { WishlistService } from '../../services/wishlist.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-    <header
-      class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm"
-    >
+    <header class="relative bg-[#F9F9F7]">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20">
+        <div class="flex items-center justify-between h-24">
           <!-- Logo -->
           <div class="shrink-0 cursor-pointer" routerLink="/">
             <span class="text-3xl font-bold text-slate-900 tracking-tight"> ArtTouch </span>
