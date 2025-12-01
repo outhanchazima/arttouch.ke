@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart.service';
+import { ProductService } from '../../services/product.service';
 import { WishlistService } from '../../services/wishlist.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   template: `
     <header
       class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm"
@@ -14,9 +17,9 @@ import { WishlistService } from '../../services/wishlist.service';
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
           <!-- Logo -->
-          <div class="flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity">
+          <div class="shrink-0 cursor-pointer hover:opacity-80 transition-opacity" routerLink="/">
             <span
-              class="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
+              class="text-2xl font-bold bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
             >
               ArtTouch
             </span>
@@ -42,6 +45,7 @@ import { WishlistService } from '../../services/wishlist.service';
           <div class="flex items-center space-x-4">
             <!-- Search Button -->
             <button
+              (click)="toggleSearch()"
               class="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"
             >
               <svg
@@ -135,10 +139,135 @@ import { WishlistService } from '../../services/wishlist.service';
           </div>
         </div>
       </div>
+
+      <!-- Search Overlay -->
+      @if (isSearchOpen()) {
+      <div
+        class="absolute top-0 left-0 right-0 bg-white z-50 shadow-lg animate-in slide-in-from-top-5 duration-300"
+      >
+        <div class="container mx-auto px-4 py-6">
+          <div class="relative max-w-3xl mx-auto">
+            <div class="flex items-center gap-4">
+              <div class="relative flex-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+                <input
+                  type="text"
+                  [(ngModel)]="searchQuery"
+                  placeholder="Search for artworks..."
+                  class="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-xl text-lg focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all outline-none"
+                  autoFocus
+                />
+              </div>
+              <button
+                (click)="toggleSearch()"
+                class="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Search Results Dropdown -->
+            @if (searchQuery().length > 0) {
+            <div
+              class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden max-h-[70vh] overflow-y-auto"
+            >
+              @if (searchResults().length > 0) {
+              <div class="p-2">
+                <div
+                  class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-2"
+                >
+                  Products
+                </div>
+                @for (product of searchResults(); track product.id) {
+                <a
+                  [routerLink]="['/product', product.id]"
+                  (click)="closeSearch()"
+                  class="flex items-center gap-4 p-3 hover:bg-slate-50 rounded-lg transition-colors group"
+                >
+                  <div class="h-16 w-16 rounded-lg overflow-hidden bg-slate-100 shrink-0">
+                    <img
+                      [src]="product.image"
+                      [alt]="product.name"
+                      class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                  <div>
+                    <h4
+                      class="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors"
+                    >
+                      {{ product.name }}
+                    </h4>
+                    <p class="text-sm text-slate-500">{{ product.category }}</p>
+                    <p class="text-sm font-semibold text-slate-900 mt-1">\${{ product.price }}</p>
+                  </div>
+                </a>
+                }
+              </div>
+              } @else {
+              <div class="p-8 text-center text-slate-500">
+                <p>No results found for "{{ searchQuery() }}"</p>
+              </div>
+              }
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      <!-- Backdrop -->
+      <div class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40" (click)="toggleSearch()"></div>
+      }
     </header>
   `,
 })
 export class HeaderComponent {
   cartService = inject(CartService);
   wishlistService = inject(WishlistService);
+  productService = inject(ProductService);
+
+  isSearchOpen = signal(false);
+  searchQuery = signal('');
+
+  searchResults = computed(() => {
+    const query = this.searchQuery();
+    if (!query) return [];
+    return this.productService.searchProducts(query);
+  });
+
+  toggleSearch() {
+    this.isSearchOpen.update((v) => !v);
+    if (!this.isSearchOpen()) {
+      this.searchQuery.set('');
+    }
+  }
+
+  closeSearch() {
+    this.isSearchOpen.set(false);
+    this.searchQuery.set('');
+  }
 }
