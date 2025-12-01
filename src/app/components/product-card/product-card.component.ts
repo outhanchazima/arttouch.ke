@@ -22,10 +22,21 @@ import { WishlistService } from '../../services/wishlist.service';
   template: `
     <div
       class="group relative bg-white rounded-xl transition-all duration-300 border border-slate-100 overflow-hidden"
+      [class.flex]="layout() === 'list'"
+      [class.flex-row]="layout() === 'list'"
+      [class.items-center]="layout() === 'list'"
+      [class.gap-6]="layout() === 'list'"
+      [class.p-4]="layout() === 'list'"
     >
       <!-- Image Container -->
       <div
-        class="relative aspect-[4/5] w-full overflow-hidden bg-slate-100 cursor-pointer"
+        class="relative overflow-hidden bg-slate-100 cursor-pointer"
+        [class.aspect-[4/5]]="layout() === 'grid'"
+        [class.w-full]="layout() === 'grid'"
+        [class.w-48]="layout() === 'list'"
+        [class.h-48]="layout() === 'list'"
+        [class.rounded-lg]="layout() === 'list'"
+        [class.shrink-0]="layout() === 'list'"
         [routerLink]="['/product', product().id]"
       >
         <img
@@ -34,7 +45,8 @@ import { WishlistService } from '../../services/wishlist.service';
           class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
         />
 
-        <!-- Quick Action Overlay -->
+        <!-- Quick Action Overlay (Grid View Only) -->
+        @if (layout() === 'grid') {
         <div
           class="absolute top-3 right-3 flex flex-col gap-2 z-10"
           (click)="$event.stopPropagation()"
@@ -79,6 +91,7 @@ import { WishlistService } from '../../services/wishlist.service';
             </svg>
           </button>
         </div>
+        }
 
         <!-- Badge -->
         @if (product().rating >= 4.8) {
@@ -91,18 +104,35 @@ import { WishlistService } from '../../services/wishlist.service';
       </div>
 
       <!-- Content -->
-      <div class="space-y-2 p-4">
+      <div
+        [class.space-y-2]="layout() === 'grid'"
+        [class.p-4]="layout() === 'grid'"
+        [class.flex-1]="layout() === 'list'"
+        [class.flex]="layout() === 'list'"
+        [class.flex-col]="layout() === 'list'"
+        [class.justify-center]="layout() === 'list'"
+      >
         <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">
           {{ product().category }}
         </p>
         <h3
           class="text-lg font-bold text-slate-900 line-clamp-1 group-hover:text-indigo-600 transition-colors"
+          [class.mb-2]="layout() === 'list'"
         >
           {{ product().name }}
         </h3>
 
+        @if (layout() === 'list') {
+        <p class="text-slate-500 text-sm mb-4 line-clamp-2">
+          Experience the beauty of {{ product().name }}, a masterpiece in {{ product().category }}.
+          Perfect for adding a touch of elegance to any space.
+        </p>
+        }
+
         <div class="flex items-center justify-between">
           <p class="text-xl font-bold text-slate-900">\${{ product().price }}</p>
+
+          @if (layout() === 'grid') {
           <div class="flex items-center text-amber-400 text-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -115,6 +145,39 @@ import { WishlistService } from '../../services/wishlist.service';
             </svg>
             <span class="ml-1 text-slate-500 font-medium">{{ product().rating }}</span>
           </div>
+          }
+
+          @if (layout() === 'list') {
+          <div class="flex gap-3">
+             <button
+              (click)="onAddToCart()"
+              class="px-6 py-2 bg-slate-900 text-white rounded-full hover:bg-indigo-600 transition-colors font-medium text-sm"
+            >
+              Add to Cart
+            </button>
+            <button
+              (click)="onToggleWishlist()"
+              class="p-2 border border-slate-200 rounded-full hover:border-pink-500 hover:text-pink-500 transition-colors"
+              [class.text-pink-500]="isInWishlist()"
+              [class.border-pink-500]="isInWishlist()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                [attr.fill]="isInWishlist() ? 'currentColor' : 'none'"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
+            </svg>
+            </button>
+          </div>
+          }
         </div>
       </div>
     </div>
@@ -122,6 +185,7 @@ import { WishlistService } from '../../services/wishlist.service';
 })
 export class ProductCardComponent {
   product = input.required<Product>();
+  layout = input<'grid' | 'list'>('grid');
 
   private cartService = inject(CartService);
   private wishlistService = inject(WishlistService);

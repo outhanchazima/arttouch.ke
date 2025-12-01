@@ -75,6 +75,58 @@ import { ProductCardComponent } from '../product-card/product-card.component';
             <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
 
             <app-sort-dropdown [currentSort]="currentSort()" (sortChange)="onSortChange($event)" />
+
+            <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
+
+            <!-- Layout Toggles -->
+            <div class="flex items-center gap-2">
+              <button
+                (click)="layout.set('grid')"
+                class="p-2 rounded transition-colors"
+                [class.text-indigo-600]="layout() === 'grid'"
+                [class.bg-indigo-50]="layout() === 'grid'"
+                [class.text-slate-400]="layout() !== 'grid'"
+                [class.hover:text-slate-600]="layout() !== 'grid'"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                  />
+                </svg>
+              </button>
+              <button
+                (click)="layout.set('list')"
+                class="p-2 rounded transition-colors"
+                [class.text-indigo-600]="layout() === 'list'"
+                [class.bg-indigo-50]="layout() === 'list'"
+                [class.text-slate-400]="layout() !== 'list'"
+                [class.hover:text-slate-600]="layout() !== 'list'"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -86,9 +138,14 @@ import { ProductCardComponent } from '../product-card/product-card.component';
         </div>
 
         <!-- Product Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div
+          class="grid gap-8"
+          [class.grid-cols-1]="layout() === 'list'"
+          [class.sm:grid-cols-2]="layout() === 'grid'"
+          [class.lg:grid-cols-4]="layout() === 'grid'"
+        >
           @for (product of paginatedProducts(); track product.id) {
-          <app-product-card [product]="product" />
+          <app-product-card [product]="product" [layout]="layout()" />
           }
         </div>
 
@@ -117,6 +174,7 @@ export class ProductGridComponent {
   currentSort = signal<SortOption>('default');
   currentPage = signal(1);
   itemsPerPage = signal(8);
+  layout = signal<'grid' | 'list'>('grid');
 
   // 1. Filtered Products
   filteredProducts = computed(() => {

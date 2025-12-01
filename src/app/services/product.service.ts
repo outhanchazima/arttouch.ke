@@ -105,6 +105,15 @@ export class ProductService {
       rating: 4.5,
       colors: ['#EF4444', '#EC4899'],
     },
+    {
+      id: 11,
+      name: 'Silent Echoes',
+      price: 160,
+      image: 'https://picsum.photos/seed/art11/400/500',
+      category: 'Print',
+      rating: 4.6,
+      colors: ['#D1D5DB', '#F59E0B'],
+    },
   ]);
 
   // Derived state for filters
