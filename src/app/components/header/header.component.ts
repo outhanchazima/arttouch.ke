@@ -65,7 +65,10 @@ import { WishlistService } from '../../services/wishlist.service';
             </button>
 
             <!-- User (Account) -->
-            <button class="p-2 text-slate-900 hover:text-slate-600 transition-colors">
+            <button
+              routerLink="/login"
+              class="p-2 text-slate-900 hover:text-slate-600 transition-colors"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6"
