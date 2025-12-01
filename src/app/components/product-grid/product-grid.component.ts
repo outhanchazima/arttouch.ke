@@ -79,30 +79,72 @@ import { ProductCardComponent } from '../product-card/product-card.component';
             <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
 
             <!-- Layout Toggles -->
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1">
+              <!-- 3 Columns -->
               <button
-                (click)="layout.set('grid')"
-                class="p-2 rounded transition-colors"
-                [class.text-indigo-600]="layout() === 'grid'"
-                [class.bg-indigo-50]="layout() === 'grid'"
-                [class.text-slate-400]="layout() !== 'grid'"
-                [class.hover:text-slate-600]="layout() !== 'grid'"
+                (click)="setGridColumns(3)"
+                class="p-2 rounded transition-colors hidden md:block"
+                [class.text-indigo-600]="layout() === 'grid' && gridColumns() === 3"
+                [class.bg-indigo-50]="layout() === 'grid' && gridColumns() === 3"
+                [class.text-slate-400]="layout() !== 'grid' || gridColumns() !== 3"
+                [class.hover:text-slate-600]="layout() !== 'grid' || gridColumns() !== 3"
+                title="3 Columns"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-5 w-5"
-                  fill="none"
+                  fill="currentColor"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
+                >
+                  <path d="M4 4h4.6v16H4V4zm5.7 0h4.6v16H9.7V4zm5.7 0H20v16h-4.6V4z" />
+                </svg>
+              </button>
+
+              <!-- 4 Columns -->
+              <button
+                (click)="setGridColumns(4)"
+                class="p-2 rounded transition-colors hidden lg:block"
+                [class.text-indigo-600]="layout() === 'grid' && gridColumns() === 4"
+                [class.bg-indigo-50]="layout() === 'grid' && gridColumns() === 4"
+                [class.text-slate-400]="layout() !== 'grid' || gridColumns() !== 4"
+                [class.hover:text-slate-600]="layout() !== 'grid' || gridColumns() !== 4"
+                title="4 Columns"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                    d="M4 4h3.25v16H4V4zm4.25 0h3.25v16H8.25V4zm4.25 0h3.25v16H12.5V4zm4.25 0H20v16h-3.25V4z"
                   />
                 </svg>
               </button>
+
+              <!-- 5 Columns -->
+              <button
+                (click)="setGridColumns(5)"
+                class="p-2 rounded transition-colors hidden xl:block"
+                [class.text-indigo-600]="layout() === 'grid' && gridColumns() === 5"
+                [class.bg-indigo-50]="layout() === 'grid' && gridColumns() === 5"
+                [class.text-slate-400]="layout() !== 'grid' || gridColumns() !== 5"
+                [class.hover:text-slate-600]="layout() !== 'grid' || gridColumns() !== 5"
+                title="5 Columns"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M4 4h2.4v16H4V4zm3.4 0h2.4v16H7.4V4zm3.4 0h2.4v16h-2.4V4zm3.4 0h2.4v16h-2.4V4zm3.4 0H20v16h-2.4V4z"
+                  />
+                </svg>
+              </button>
+
+              <!-- List View -->
               <button
                 (click)="layout.set('list')"
                 class="p-2 rounded transition-colors"
@@ -110,6 +152,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
                 [class.bg-indigo-50]="layout() === 'list'"
                 [class.text-slate-400]="layout() !== 'list'"
                 [class.hover:text-slate-600]="layout() !== 'list'"
+                title="List View"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -139,10 +182,16 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 
         <!-- Product Grid -->
         <div
-          class="grid gap-8"
-          [class.grid-cols-1]="layout() === 'list'"
+          class="grid gap-8 grid-cols-1"
           [class.sm:grid-cols-2]="layout() === 'grid'"
-          [class.lg:grid-cols-4]="layout() === 'grid'"
+          [class.md:grid-cols-3]="layout() === 'grid' && gridColumns() === 3"
+          [class.lg:grid-cols-3]="layout() === 'grid' && gridColumns() === 3"
+          [class.lg:grid-cols-4]="
+            layout() === 'grid' && (gridColumns() === 4 || gridColumns() === 5)
+          "
+          [class.xl:grid-cols-3]="layout() === 'grid' && gridColumns() === 3"
+          [class.xl:grid-cols-4]="layout() === 'grid' && gridColumns() === 4"
+          [class.xl:grid-cols-5]="layout() === 'grid' && gridColumns() === 5"
         >
           @for (product of paginatedProducts(); track product.id) {
           <app-product-card [product]="product" [layout]="layout()" />
@@ -175,6 +224,12 @@ export class ProductGridComponent {
   currentPage = signal(1);
   itemsPerPage = signal(8);
   layout = signal<'grid' | 'list'>('grid');
+  gridColumns = signal<number>(4);
+
+  setGridColumns(cols: number) {
+    this.layout.set('grid');
+    this.gridColumns.set(cols);
+  }
 
   // 1. Filtered Products
   filteredProducts = computed(() => {
