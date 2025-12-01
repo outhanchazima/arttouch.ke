@@ -6,15 +6,16 @@ import { Component, input, output } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="flex items-center justify-center gap-2 mt-12">
+    <div class="flex items-center justify-center gap-4 mt-16">
+      <!-- Previous -->
       <button
         [disabled]="currentPage() === 1"
         (click)="onPageChange(currentPage() - 1)"
-        class="p-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        class="p-2 text-slate-400 hover:text-slate-900 disabled:opacity-0 disabled:cursor-default transition-colors"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
+          class="h-6 w-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -23,37 +24,46 @@ import { Component, input, output } from '@angular/core';
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M15 19l-7-7 7-7"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
           />
         </svg>
       </button>
 
-      @for (page of pages; track page) {
-      <button
-        (click)="onPageChange(page)"
-        class="w-10 h-10 rounded-lg font-medium transition-colors"
-        [class.bg-indigo-600]="currentPage() === page"
-        [class.text-white]="currentPage() === page"
-        [class.text-slate-600]="currentPage() !== page"
-        [class.hover:bg-slate-50]="currentPage() !== page"
-      >
-        {{ page }}
-      </button>
-      }
+      <!-- Pages -->
+      <div class="flex items-center gap-2">
+        @for (page of pages; track page) {
+        <button
+          (click)="onPageChange(page)"
+          class="w-10 h-10 flex items-center justify-center rounded-full text-sm font-medium transition-all duration-300"
+          [class.bg-slate-900]="currentPage() === page"
+          [class.text-white]="currentPage() === page"
+          [class.text-slate-500]="currentPage() !== page"
+          [class.hover:text-slate-900]="currentPage() !== page"
+        >
+          {{ page }}
+        </button>
+        }
+      </div>
 
+      <!-- Next -->
       <button
         [disabled]="currentPage() === totalPages()"
         (click)="onPageChange(currentPage() + 1)"
-        class="p-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        class="p-2 text-slate-400 hover:text-slate-900 disabled:opacity-0 disabled:cursor-default transition-colors"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
+          class="h-6 w-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M14 5l7 7m0 0l-7 7m7-7H3"
+          />
         </svg>
       </button>
     </div>
