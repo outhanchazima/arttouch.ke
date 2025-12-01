@@ -8,6 +8,8 @@ export interface FilterCriteria {
   maxPrice: number | null;
 }
 
+export type SortOption = 'default' | 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -85,6 +87,24 @@ export class ProductService {
       rating: 4.7,
       colors: ['#10B981', '#F59E0B'],
     },
+    {
+      id: 9,
+      name: 'Cosmic Bloom',
+      price: 275,
+      image: 'https://picsum.photos/seed/art9/400/500',
+      category: 'Oil Painting',
+      rating: 4.8,
+      colors: ['#3B82F6', '#1F2937'],
+    },
+    {
+      id: 10,
+      name: 'Vivid Motion',
+      price: 130,
+      image: 'https://picsum.photos/seed/art10/400/500',
+      category: 'Acrylic',
+      rating: 4.5,
+      colors: ['#EF4444', '#EC4899'],
+    },
   ]);
 
   // Derived state for filters
@@ -129,6 +149,22 @@ export class ProductService {
 
       return matchesCategory && matchesColor && matchesPrice;
     });
+  }
+
+  sortProducts(products: Product[], option: SortOption): Product[] {
+    const sorted = [...products];
+    switch (option) {
+      case 'price-asc':
+        return sorted.sort((a, b) => a.price - b.price);
+      case 'price-desc':
+        return sorted.sort((a, b) => b.price - a.price);
+      case 'name-asc':
+        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      case 'name-desc':
+        return sorted.sort((a, b) => b.name.localeCompare(a.name));
+      default:
+        return sorted;
+    }
   }
 
   searchProducts(query: string): Product[] {

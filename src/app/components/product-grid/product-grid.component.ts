@@ -1,13 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FilterCriteria, ProductService } from '../../services/product.service';
+import { FormsModule } from '@angular/forms';
+import { FilterCriteria, ProductService, SortOption } from '../../services/product.service';
 import { ProductFiltersComponent } from '../filters/product-filters.component';
+import { SortDropdownComponent } from '../filters/sort-dropdown.component';
+import { PaginationComponent } from '../pagination/pagination.component';
 import { ProductCardComponent } from '../product-card/product-card.component';
 
 @Component({
   selector: 'app-product-grid',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent, ProductFiltersComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ProductCardComponent,
+    ProductFiltersComponent,
+    SortDropdownComponent,
+    PaginationComponent,
+  ],
   template: `
     <section class="py-12 bg-white">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,93 +55,51 @@ import { ProductCardComponent } from '../product-card/product-card.component';
           </div>
 
           <!-- Right: Sorting & Layout -->
-          <div class="flex items-center gap-6 w-full lg:w-auto justify-between lg:justify-end">
-            <button
-              class="flex items-center gap-1 font-medium text-slate-900 hover:text-indigo-600 transition-colors"
-            >
-              Default Sorting
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 text-slate-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+          <div
+            class="flex flex-wrap items-center gap-6 w-full lg:w-auto justify-between lg:justify-end"
+          >
+            <!-- Items Per Page -->
+            <div class="flex items-center gap-2 text-sm text-slate-500">
+              <span>Show:</span>
+              <select
+                [ngModel]="itemsPerPage()"
+                (ngModelChange)="onItemsPerPageChange($event)"
+                class="bg-transparent border-none font-medium text-slate-900 focus:ring-0 cursor-pointer"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-
-            <div class="flex items-center gap-2 border-l border-slate-200 pl-6">
-              <button class="p-2 text-slate-400 hover:text-slate-900 transition-colors">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </button>
-              <button class="p-2 text-slate-900 bg-slate-100 rounded transition-colors">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                  />
-                </svg>
-              </button>
-              <button class="p-2 text-slate-400 hover:text-slate-900 transition-colors">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                  />
-                </svg>
-              </button>
+                <option [value]="8">8</option>
+                <option [value]="12">12</option>
+                <option [value]="24">24</option>
+              </select>
             </div>
+
+            <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
+
+            <app-sort-dropdown [currentSort]="currentSort()" (sortChange)="onSortChange($event)" />
           </div>
         </div>
 
+        <!-- Results Summary -->
+        <div class="mb-6 text-sm text-slate-500">
+          Showing <span class="font-medium text-slate-900">{{ startItemIndex() }}</span> -
+          <span class="font-medium text-slate-900">{{ endItemIndex() }}</span> of
+          <span class="font-medium text-slate-900">{{ totalItems() }}</span> results
+        </div>
+
+        <!-- Product Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          @for (product of products(); track product.id) {
+          @for (product of paginatedProducts(); track product.id) {
           <app-product-card [product]="product" />
           }
         </div>
 
-        <div class="mt-12 text-center md:hidden">
-          <button
-            class="px-6 py-3 bg-white border border-slate-200 rounded-full font-semibold text-slate-900 hover:bg-slate-50 transition-colors"
-          >
-            View All Products
-          </button>
-        </div>
+        <!-- Pagination -->
+        @if (totalPages() > 1) {
+        <app-pagination
+          [currentPage]="currentPage()"
+          [totalPages]="totalPages()"
+          (pageChange)="onPageChange($event)"
+        />
+        }
       </div>
     </section>
   `,
@@ -146,13 +114,64 @@ export class ProductGridComponent {
     maxPrice: null,
   });
 
-  products = computed(() => {
+  currentSort = signal<SortOption>('default');
+  currentPage = signal(1);
+  itemsPerPage = signal(8);
+
+  // 1. Filtered Products
+  filteredProducts = computed(() => {
     const allProducts = this.productService.getProducts()();
     const criteria = this.filterCriteria();
     return this.productService.filterProducts(allProducts, criteria);
   });
 
+  // 2. Sorted Products
+  sortedProducts = computed(() => {
+    const filtered = this.filteredProducts();
+    const sortOption = this.currentSort();
+    return this.productService.sortProducts(filtered, sortOption);
+  });
+
+  // 3. Paginated Products
+  paginatedProducts = computed(() => {
+    const sorted = this.sortedProducts();
+    const page = this.currentPage();
+    const limit = this.itemsPerPage();
+    const start = (page - 1) * limit;
+    return sorted.slice(start, start + limit);
+  });
+
+  // Metadata
+  totalItems = computed(() => this.filteredProducts().length);
+  totalPages = computed(() => Math.ceil(this.totalItems() / this.itemsPerPage()));
+
+  startItemIndex = computed(() => {
+    if (this.totalItems() === 0) return 0;
+    return (this.currentPage() - 1) * this.itemsPerPage() + 1;
+  });
+
+  endItemIndex = computed(() => {
+    return Math.min(this.currentPage() * this.itemsPerPage(), this.totalItems());
+  });
+
   onFilterChange(criteria: FilterCriteria) {
     this.filterCriteria.set(criteria);
+    this.currentPage.set(1); // Reset to first page on filter change
+  }
+
+  onSortChange(option: SortOption) {
+    this.currentSort.set(option);
+    this.currentPage.set(1); // Reset to first page on sort change
+  }
+
+  onPageChange(page: number) {
+    this.currentPage.set(page);
+    // Scroll to top of grid
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  onItemsPerPageChange(limit: number) {
+    this.itemsPerPage.set(Number(limit));
+    this.currentPage.set(1);
   }
 }
