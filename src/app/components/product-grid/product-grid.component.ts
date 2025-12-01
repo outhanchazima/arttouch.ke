@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { ProductService } from '../../services/product.service';
+import { Component, computed, inject, signal } from '@angular/core';
+import { FilterCriteria, ProductService } from '../../services/product.service';
+import { ProductFiltersComponent } from '../filters/product-filters.component';
 import { ProductCardComponent } from '../product-card/product-card.component';
 
 @Component({
   selector: 'app-product-grid',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent],
+  imports: [CommonModule, ProductCardComponent, ProductFiltersComponent],
   template: `
     <section class="py-12 bg-white">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,111 +41,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
           <!-- Left: Filters -->
           <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
             <span class="text-slate-500 font-medium">Filter by</span>
-
-            <div class="flex flex-wrap items-center gap-6">
-              <button
-                class="group flex items-center gap-1 font-medium text-slate-900 hover:text-indigo-600 transition-colors"
-              >
-                <span
-                  class="w-1.5 h-1.5 rounded-full bg-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"
-                ></span>
-                Categories
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 text-slate-400 group-hover:text-indigo-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-
-              <button
-                class="group flex items-center gap-1 font-medium text-slate-900 hover:text-indigo-600 transition-colors"
-              >
-                Color
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 text-slate-400 group-hover:text-indigo-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-
-              <button
-                class="group flex items-center gap-1 font-medium text-slate-900 hover:text-indigo-600 transition-colors"
-              >
-                Size
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 text-slate-400 group-hover:text-indigo-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-
-              <button
-                class="group flex items-center gap-1 font-medium text-slate-900 hover:text-indigo-600 transition-colors"
-              >
-                Brand
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 text-slate-400 group-hover:text-indigo-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-
-              <button
-                class="group flex items-center gap-1 font-medium text-slate-900 hover:text-indigo-600 transition-colors"
-              >
-                Price
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 text-slate-400 group-hover:text-indigo-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-            </div>
+            <app-product-filters (filterChange)="onFilterChange($event)" />
           </div>
 
           <!-- Right: Sorting & Layout -->
@@ -241,5 +138,21 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 })
 export class ProductGridComponent {
   private productService = inject(ProductService);
-  products = this.productService.getProducts();
+
+  filterCriteria = signal<FilterCriteria>({
+    categories: [],
+    colors: [],
+    minPrice: null,
+    maxPrice: null,
+  });
+
+  products = computed(() => {
+    const allProducts = this.productService.getProducts()();
+    const criteria = this.filterCriteria();
+    return this.productService.filterProducts(allProducts, criteria);
+  });
+
+  onFilterChange(criteria: FilterCriteria) {
+    this.filterCriteria.set(criteria);
+  }
 }

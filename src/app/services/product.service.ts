@@ -1,5 +1,12 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { Product } from '../components/product-card/product-card.component';
+
+export interface FilterCriteria {
+  categories: string[];
+  colors: string[];
+  minPrice: number | null;
+  maxPrice: number | null;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +47,7 @@ export class ProductService {
       image: 'https://picsum.photos/seed/art4/400/500',
       category: 'Oil Painting',
       rating: 5.0,
+      colors: ['#1F2937', '#D1D5DB'],
     },
     {
       id: 5,
@@ -48,6 +56,7 @@ export class ProductService {
       image: 'https://picsum.photos/seed/art5/400/500',
       category: 'Acrylic',
       rating: 4.8,
+      colors: ['#3B82F6', '#10B981'],
     },
     {
       id: 6,
@@ -56,6 +65,7 @@ export class ProductService {
       image: 'https://picsum.photos/seed/art6/400/500',
       category: 'Print',
       rating: 4.6,
+      colors: ['#F59E0B', '#EF4444'],
     },
     {
       id: 7,
@@ -64,6 +74,7 @@ export class ProductService {
       image: 'https://picsum.photos/seed/art7/400/500',
       category: 'Digital Art',
       rating: 4.9,
+      colors: ['#8B5CF6', '#EC4899'],
     },
     {
       id: 8,
@@ -72,11 +83,52 @@ export class ProductService {
       image: 'https://picsum.photos/seed/art8/400/500',
       category: 'Photography',
       rating: 4.7,
+      colors: ['#10B981', '#F59E0B'],
     },
   ]);
 
+  // Derived state for filters
+  readonly categories = computed(() => {
+    const cats = new Set(this.products().map((p) => p.category));
+    return Array.from(cats).sort();
+  });
+
+  readonly colors = computed(() => {
+    const colors = new Set(
+      this.products()
+        .flatMap((p) => p.colors || [])
+        .filter(Boolean)
+    );
+    return Array.from(colors);
+  });
+
+  readonly priceRange = computed(() => {
+    const prices = this.products().map((p) => p.price);
+    return {
+      min: Math.min(...prices),
+      max: Math.max(...prices),
+    };
+  });
+
   getProducts() {
     return this.products.asReadonly();
+  }
+
+  filterProducts(products: Product[], criteria: FilterCriteria): Product[] {
+    return products.filter((product) => {
+      const matchesCategory =
+        criteria.categories.length === 0 || criteria.categories.includes(product.category);
+
+      const matchesColor =
+        criteria.colors.length === 0 ||
+        (product.colors && product.colors.some((c) => criteria.colors.includes(c)));
+
+      const matchesPrice =
+        (!criteria.minPrice || product.price >= criteria.minPrice) &&
+        (!criteria.maxPrice || product.price <= criteria.maxPrice);
+
+      return matchesCategory && matchesColor && matchesPrice;
+    });
   }
 
   searchProducts(query: string): Product[] {
