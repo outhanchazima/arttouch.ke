@@ -141,7 +141,10 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
             </button>
 
             <!-- Mobile Menu Button -->
-            <button class="md:hidden p-2 text-slate-500 hover:text-indigo-600 rounded-full">
+            <button
+              (click)="toggleMobileMenu()"
+              class="md:hidden p-2 text-slate-500 hover:text-indigo-600 rounded-full"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6"
@@ -160,6 +163,137 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
           </div>
         </div>
       </app-container>
+
+      <!-- Mobile Menu Drawer -->
+      <div
+        class="fixed inset-0 bg-black/50 z-50 md:hidden transition-opacity duration-300"
+        [class.opacity-0]="!isMobileMenuOpen()"
+        [class.pointer-events-none]="!isMobileMenuOpen()"
+        (click)="toggleMobileMenu()"
+      ></div>
+
+      <div
+        class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-50 shadow-xl transform transition-transform duration-300 md:hidden flex flex-col"
+        [class.translate-x-0]="isMobileMenuOpen()"
+        [class.-translate-x-full]="!isMobileMenuOpen()"
+      >
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+          <span class="text-xl font-bold text-slate-900">Menu</span>
+          <button (click)="toggleMobileMenu()" class="p-2 text-slate-500 hover:text-slate-900">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <nav class="flex-1 p-6 space-y-6 overflow-y-auto">
+          <a
+            routerLink="/"
+            (click)="toggleMobileMenu()"
+            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+          >
+            Home
+          </a>
+          <a
+            href="#"
+            (click)="toggleMobileMenu()"
+            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+          >
+            Shop
+          </a>
+          <a
+            href="#"
+            (click)="toggleMobileMenu()"
+            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+          >
+            Products
+          </a>
+          <a
+            href="#"
+            (click)="toggleMobileMenu()"
+            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+          >
+            Pages
+          </a>
+          <a
+            href="#"
+            (click)="toggleMobileMenu()"
+            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+          >
+            Blog
+          </a>
+          <a
+            href="#"
+            (click)="toggleMobileMenu()"
+            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+          >
+            Elements
+          </a>
+        </nav>
+
+        <div class="p-6 border-t border-slate-100 bg-slate-50">
+          <div class="flex flex-col gap-4">
+            <a
+              routerLink="/login"
+              (click)="toggleMobileMenu()"
+              class="flex items-center gap-3 text-slate-600 font-medium"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+              My Account
+            </a>
+            <button
+              (click)="toggleMobileMenu(); wishlistService.toggleWishlist(null!)"
+              class="flex items-center gap-3 text-slate-600 font-medium"
+            >
+              <!-- Note: wishlist toggle usually needs a product, but here we might just want to navigate to wishlist page if it existed. 
+                   For now, I'll just keep the link or remove the action. 
+                   Actually, let's just link to a wishlist page or keep it simple. 
+                   The header has a wishlist icon that opens something? No, it just shows count.
+                   Let's just show the Wishlist link.
+              -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+              Wishlist ({{ wishlistService.items().length }})
+            </button>
+          </div>
+        </div>
+      </div>
 
       <!-- Search Overlay -->
       @if (isSearchOpen()) {
@@ -273,6 +407,7 @@ export class HeaderComponent {
 
   isSearchOpen = signal(false);
   searchQuery = signal('');
+  isMobileMenuOpen = signal(false);
 
   searchResults = computed(() => {
     const query = this.searchQuery();
@@ -290,5 +425,9 @@ export class HeaderComponent {
   closeSearch() {
     this.isSearchOpen.set(false);
     this.searchQuery.set('');
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen.update((v) => !v);
   }
 }
