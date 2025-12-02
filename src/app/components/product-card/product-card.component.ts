@@ -3,17 +3,8 @@ import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BadgeComponent } from '../../shared/ui/badge/badge.component';
 
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  category: string;
-  rating: number;
-  colors?: string[];
-}
-
 import { CartService } from '../../services/cart.service';
+import { Product } from '../../services/product.service';
 import { WishlistService } from '../../services/wishlist.service';
 
 @Component({
@@ -126,7 +117,7 @@ import { WishlistService } from '../../services/wishlist.service';
         }
 
         <div class="flex items-center justify-between">
-          <p class="text-xl font-bold text-slate-900">\${{ product().price }}</p>
+          <p class="text-xl font-bold text-slate-900">KES {{ product().price }}</p>
 
           @if (layout() === 'grid') {
           <div class="flex items-center text-amber-400 text-sm">
