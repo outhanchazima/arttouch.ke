@@ -14,7 +14,8 @@ import { WishlistService } from '../../services/wishlist.service';
     <div
       class="group relative bg-white rounded-xl transition-all duration-300 border border-slate-100 overflow-hidden"
       [class.flex]="layout() === 'list'"
-      [class.flex-row]="layout() === 'list'"
+      [class.flex-col]="layout() === 'list'"
+      [class.sm:flex-row]="layout() === 'list'"
       [class.items-center]="layout() === 'list'"
       [class.gap-6]="layout() === 'list'"
       [class.p-4]="layout() === 'list'"
@@ -23,8 +24,8 @@ import { WishlistService } from '../../services/wishlist.service';
       <div
         class="relative overflow-hidden bg-slate-100 cursor-pointer"
         [class.aspect-[4/5]]="layout() === 'grid'"
-        [class.w-full]="layout() === 'grid'"
-        [class.w-48]="layout() === 'list'"
+        [class.w-full]="layout() === 'grid' || layout() === 'list'"
+        [class.sm:w-48]="layout() === 'list'"
         [class.h-48]="layout() === 'list'"
         [class.rounded-lg]="layout() === 'list'"
         [class.shrink-0]="layout() === 'list'"

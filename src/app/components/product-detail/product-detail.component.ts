@@ -13,12 +13,12 @@ import { ProductCardComponent } from '../product-card/product-card.component';
   imports: [CommonModule, ContainerComponent, ProductCardComponent, BadgeComponent],
   template: `
     <app-container>
-      <div class="py-8 lg:py-12">
+      <div class="py-4 lg:py-12">
         <!-- Main Product Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 mb-20">
           <!-- Left: Image Gallery -->
-          <div class="space-y-4 sticky top-24 self-start">
-            <div class="aspect-square w-full bg-slate-50 rounded-lg overflow-hidden relative group">
+          <div class="space-y-4 lg:sticky lg:top-24 self-start">
+            <div class="aspect-4/3 lg:aspect-square w-full bg-slate-50 rounded-lg overflow-hidden relative group">
               <img
                 [src]="selectedImage()"
                 [alt]="product().name"
@@ -38,11 +38,11 @@ import { ProductCardComponent } from '../product-card/product-card.component';
                 </span>
               </div>
             </div>
-            <div class="flex gap-4">
+            <div class="flex gap-4 overflow-x-auto pb-2 snap-x">
               @for (img of images(); track img) {
               <button
                 (click)="selectImage(img)"
-                class="w-20 h-20 rounded-lg overflow-hidden border transition-all duration-200 hover:opacity-100"
+                class="w-20 h-20 rounded-lg overflow-hidden border transition-all duration-200 hover:opacity-100 shrink-0 snap-start"
                 [class.border-slate-900]="selectedImage() === img"
                 [class.border-transparent]="selectedImage() !== img"
                 [class.opacity-60]="selectedImage() !== img"
@@ -73,7 +73,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
               }
             </div>
 
-            <h1 class="text-3xl font-medium text-slate-900 mb-2 tracking-tight">
+            <h1 class="text-2xl lg:text-3xl font-medium text-slate-900 mb-2 tracking-tight">
               {{ product().name }}
             </h1>
 
@@ -111,8 +111,8 @@ import { ProductCardComponent } from '../product-card/product-card.component';
             <div class="space-y-4 mb-8 text-sm text-slate-600">
               <!-- Product Details Tabs -->
               <div class="mb-20">
-                <div class="border-b border-slate-200 mb-8">
-                  <div class="flex gap-8">
+                <div class="border-b border-slate-200 mb-8 overflow-x-auto">
+                  <div class="flex gap-8 min-w-max">
                     @for (tab of tabs; track tab) {
                     <button
                       (click)="activeTab.set(tab)"
