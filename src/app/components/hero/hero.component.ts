@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { BadgeComponent } from '../../shared/ui/badge/badge.component';
+import { ButtonComponent } from '../../shared/ui/button/button.component';
+import { ContainerComponent } from '../../shared/ui/container/container.component';
 
 @Component({
   selector: 'app-hero',
-  standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonComponent, BadgeComponent, ContainerComponent],
   template: `
     <section class="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden">
       <!-- Background Blobs -->
@@ -20,17 +22,15 @@ import { Component } from '@angular/core';
         ></div>
       </div>
 
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <span
-          class="inline-block py-1 px-3 rounded-full bg-indigo-50 text-indigo-600 text-sm font-semibold mb-6 border border-indigo-100"
-        >
-          New Collection 2025
-        </span>
+      <app-container class="relative z-10 text-center">
+        <div class="mb-6">
+          <app-badge variant="accent">New Collection 2025</app-badge>
+        </div>
 
         <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-8">
           Discover Art that <br />
           <span
-            class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
+            class="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
           >
             Touches Your Soul
           </span>
@@ -42,16 +42,8 @@ import { Component } from '@angular/core';
         </p>
 
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-          <button
-            class="px-8 py-4 bg-slate-900 text-white rounded-full font-semibold hover:bg-slate-800 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-          >
-            Shop Now
-          </button>
-          <button
-            class="px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-full font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all duration-300"
-          >
-            View Gallery
-          </button>
+          <app-button>Shop Now</app-button>
+          <app-button variant="outline">View Gallery</app-button>
         </div>
 
         <!-- Stats / Social Proof -->
@@ -75,7 +67,7 @@ import { Component } from '@angular/core';
             <p class="text-slate-500 text-sm">Support</p>
           </div>
         </div>
-      </div>
+      </app-container>
     </section>
   `,
   styles: [

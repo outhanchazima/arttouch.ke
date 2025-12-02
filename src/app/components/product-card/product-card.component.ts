@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { BadgeComponent } from '../../shared/ui/badge/badge.component';
 
 export interface Product {
   id: number;
@@ -17,8 +18,7 @@ import { WishlistService } from '../../services/wishlist.service';
 
 @Component({
   selector: 'app-product-card',
-  standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, BadgeComponent],
   template: `
     <div
       class="group relative bg-white rounded-xl transition-all duration-300 border border-slate-100 overflow-hidden"
@@ -95,11 +95,7 @@ import { WishlistService } from '../../services/wishlist.service';
 
         <!-- Badge -->
         @if (product().rating >= 4.8) {
-        <div
-          class="absolute top-3 left-3 bg-white/90 backdrop-blur px-2 py-1 rounded-lg text-xs font-bold text-indigo-600 shadow-sm"
-        >
-          Top Rated
-        </div>
+        <app-badge variant="glass" size="sm" class="absolute top-3 left-3">Top Rated</app-badge>
         }
       </div>
 

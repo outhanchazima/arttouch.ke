@@ -3,7 +3,6 @@ import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
-  standalone: true,
   imports: [CommonModule],
   template: `
     <div class="flex items-center justify-center gap-4 mt-16">
@@ -76,8 +75,6 @@ export class PaginationComponent {
 
   get pages() {
     const total = this.totalPages();
-    const current = this.currentPage();
-
     // Simple logic for now: show all if <= 7, otherwise show range around current
     // For this demo, let's just show all since we have few items
     return Array.from({ length: total }, (_, i) => i + 1);

@@ -5,14 +5,14 @@ import { RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
 import { WishlistService } from '../../services/wishlist.service';
+import { ContainerComponent } from '../../shared/ui/container/container.component';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, ContainerComponent],
   template: `
     <header class="relative bg-[#F9F9F7]">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <app-container>
         <div class="flex items-center justify-between h-24">
           <!-- Logo -->
           <div class="shrink-0 cursor-pointer" routerLink="/">
@@ -159,7 +159,7 @@ import { WishlistService } from '../../services/wishlist.service';
             </button>
           </div>
         </div>
-      </div>
+      </app-container>
 
       <!-- Search Overlay -->
       @if (isSearchOpen()) {

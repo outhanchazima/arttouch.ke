@@ -2,18 +2,22 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, input, signal } from '@angular/core';
 
 @Component({
-  selector: 'app-filter-dropdown',
-  standalone: true,
+  selector: 'app-dropdown',
   imports: [CommonModule],
   template: `
     <div class="relative">
+      <!-- Trigger -->
       <button
         (click)="toggle()"
-        class="group flex items-center gap-1 font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+        class="group flex items-center gap-1 font-medium transition-colors"
+        [class.text-slate-900]="!isActive()"
         [class.text-indigo-600]="isOpen() || isActive()"
+        [class.hover:text-indigo-600]="!isActive()"
       >
         @if (isActive()) {
         <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+        } @if (prefix()) {
+        <span class="text-slate-500 font-normal">{{ prefix() }}</span>
         }
         {{ label() }}
         <svg
@@ -34,9 +38,16 @@ import { Component, ElementRef, HostListener, input, signal } from '@angular/cor
         </svg>
       </button>
 
+      <!-- Panel -->
       @if (isOpen()) {
       <div
-        class="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-100 p-4 z-20 animate-in fade-in zoom-in-95 duration-200"
+        class="absolute top-full mt-2 bg-white rounded-xl shadow-xl border border-slate-100 z-20 animate-in fade-in zoom-in-95 duration-200"
+        [class.left-0]="align() === 'left'"
+        [class.right-0]="align() === 'right'"
+        [class.w-64]="width() === 'md'"
+        [class.w-48]="width() === 'sm'"
+        [class.p-4]="padding()"
+        [class.py-2]="!padding()"
       >
         <ng-content></ng-content>
       </div>
@@ -44,9 +55,14 @@ import { Component, ElementRef, HostListener, input, signal } from '@angular/cor
     </div>
   `,
 })
-export class FilterDropdownComponent {
+export class DropdownComponent {
   label = input.required<string>();
+  prefix = input<string>('');
   isActive = input<boolean>(false);
+  align = input<'left' | 'right'>('left');
+  width = input<'sm' | 'md'>('md');
+  padding = input<boolean>(true);
+
   isOpen = signal(false);
 
   constructor(private elementRef: ElementRef) {}

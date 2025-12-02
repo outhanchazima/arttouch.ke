@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FilterCriteria, ProductService, SortOption } from '../../services/product.service';
+import { ContainerComponent } from '../../shared/ui/container/container.component';
+import { PaginationComponent } from '../../shared/ui/pagination/pagination.component';
 import { ProductFiltersComponent } from '../filters/product-filters.component';
 import { SortDropdownComponent } from '../filters/sort-dropdown.component';
-import { PaginationComponent } from '../pagination/pagination.component';
 import { ProductCardComponent } from '../product-card/product-card.component';
 
 @Component({
   selector: 'app-product-grid',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -17,11 +17,12 @@ import { ProductCardComponent } from '../product-card/product-card.component';
     ProductFiltersComponent,
     SortDropdownComponent,
     PaginationComponent,
+    ContainerComponent,
   ],
   template: `
     <!-- Page Header / Banner -->
     <section class="bg-[#F9F9F7] py-16 mb-12">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <app-container>
         <div class="flex flex-col md:flex-row items-center justify-between gap-8">
           <!-- Title & Breadcrumbs -->
           <div class="text-center md:text-left">
@@ -38,11 +39,11 @@ import { ProductCardComponent } from '../product-card/product-card.component';
           <!-- Optional: Banner Image Placeholder (to match the look) -->
           <!-- <div class="hidden md:block w-1/2 h-64 bg-slate-200 rounded-lg"></div> -->
         </div>
-      </div>
+      </app-container>
     </section>
 
     <section class="pb-12 bg-white">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <app-container>
         <!-- Filter Bar -->
         <div
           class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-10 pb-6 border-b border-slate-100"
@@ -205,7 +206,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
           (pageChange)="onPageChange($event)"
         />
         }
-      </div>
+      </app-container>
     </section>
   `,
 })

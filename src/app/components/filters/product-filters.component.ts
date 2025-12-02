@@ -2,16 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FilterCriteria, ProductService } from '../../services/product.service';
-import { FilterDropdownComponent } from './filter-dropdown.component';
+import { DropdownComponent } from '../../shared/ui/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-product-filters',
   standalone: true,
-  imports: [CommonModule, FormsModule, FilterDropdownComponent],
+  imports: [CommonModule, FormsModule, DropdownComponent],
   template: `
     <div class="flex flex-wrap items-center gap-6">
       <!-- Categories Filter -->
-      <app-filter-dropdown label="Categories" [isActive]="currentFilters().categories.length > 0">
+      <app-dropdown label="Categories" [isActive]="currentFilters().categories.length > 0">
         <div class="space-y-2">
           @for (category of productService.categories(); track category) {
           <label class="flex items-center gap-3 cursor-pointer group">
@@ -29,10 +29,10 @@ import { FilterDropdownComponent } from './filter-dropdown.component';
           </label>
           }
         </div>
-      </app-filter-dropdown>
+      </app-dropdown>
 
       <!-- Colors Filter -->
-      <app-filter-dropdown label="Colors" [isActive]="currentFilters().colors.length > 0">
+      <app-dropdown label="Colors" [isActive]="currentFilters().colors.length > 0">
         <div class="grid grid-cols-4 gap-2">
           @for (color of productService.colors(); track color) {
           <button
@@ -60,10 +60,10 @@ import { FilterDropdownComponent } from './filter-dropdown.component';
           </button>
           }
         </div>
-      </app-filter-dropdown>
+      </app-dropdown>
 
       <!-- Price Filter -->
-      <app-filter-dropdown label="Price" [isActive]="isPriceActive()">
+      <app-dropdown label="Price" [isActive]="isPriceActive()">
         <div class="space-y-4 min-w-[200px]">
           <div class="flex items-center justify-between text-sm text-slate-600">
             <span>Range</span>
@@ -108,7 +108,7 @@ import { FilterDropdownComponent } from './filter-dropdown.component';
             Reset Price
           </button>
         </div>
-      </app-filter-dropdown>
+      </app-dropdown>
 
       <!-- Clear All -->
       @if (hasActiveFilters()) {
