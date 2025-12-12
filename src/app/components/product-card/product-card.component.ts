@@ -12,7 +12,7 @@ import { WishlistService } from '../../services/wishlist.service';
   imports: [CommonModule, RouterLink, BadgeComponent],
   template: `
     <div
-      class="group relative bg-white rounded-xl transition-all duration-300 border border-slate-100 overflow-hidden"
+      class="group relative bg-white transition-all duration-300 border border-gray-100 overflow-hidden"
       [class.flex]="layout() === 'list'"
       [class.flex-col]="layout() === 'list'"
       [class.sm:flex-row]="layout() === 'list'"
@@ -22,12 +22,11 @@ import { WishlistService } from '../../services/wishlist.service';
     >
       <!-- Image Container -->
       <div
-        class="relative overflow-hidden bg-slate-100 cursor-pointer"
-        [class.aspect-[4/5]]="layout() === 'grid'"
+        class="relative overflow-hidden bg-gray-100 cursor-pointer"
+        [class.aspect-square]="layout() === 'grid'"
         [class.w-full]="layout() === 'grid' || layout() === 'list'"
         [class.sm:w-48]="layout() === 'list'"
         [class.h-48]="layout() === 'list'"
-        [class.rounded-lg]="layout() === 'list'"
         [class.shrink-0]="layout() === 'list'"
         [routerLink]="['/product', product().id]"
       >
@@ -45,7 +44,7 @@ import { WishlistService } from '../../services/wishlist.service';
         >
           <button
             (click)="onAddToCart()"
-            class="p-3 bg-white text-slate-900 rounded-full hover:bg-indigo-600 hover:text-white transition-colors shadow-lg"
+            class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-900 hover:text-white transition-colors shadow-lg"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -64,8 +63,8 @@ import { WishlistService } from '../../services/wishlist.service';
           </button>
           <button
             (click)="onToggleWishlist()"
-            class="p-3 bg-white text-slate-900 rounded-full hover:border-pink-500 hover:text-pink-500 transition-colors shadow-lg"
-            [class.text-pink-500]="isInWishlist()"
+            class="p-3 bg-white text-gray-900 rounded-full hover:bg-gray-900 hover:text-white transition-colors shadow-lg"
+            [class.text-red-500]="isInWishlist()"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -100,28 +99,28 @@ import { WishlistService } from '../../services/wishlist.service';
         [class.flex-col]="layout() === 'list'"
         [class.justify-center]="layout() === 'list'"
       >
-        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">
+        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">
           {{ product().category }}
         </p>
         <h3
-          class="text-lg font-bold text-slate-900 line-clamp-1 group-hover:text-indigo-600 transition-colors"
+          class="text-lg font-bold text-gray-900 line-clamp-1 group-hover:text-orange-500 transition-colors"
           [class.mb-2]="layout() === 'list'"
         >
           {{ product().name }}
         </h3>
 
         @if (layout() === 'list') {
-        <p class="text-slate-500 text-sm mb-4 line-clamp-2">
+        <p class="text-gray-500 text-sm mb-4 line-clamp-2">
           Experience the beauty of {{ product().name }}, a masterpiece in {{ product().category }}.
           Perfect for adding a touch of elegance to any space.
         </p>
         }
 
         <div class="flex items-center justify-between">
-          <p class="text-xl font-bold text-slate-900">KES {{ product().price }}</p>
+          <p class="text-xl font-bold text-gray-900">KES {{ product().price }}</p>
 
           @if (layout() === 'grid') {
-          <div class="flex items-center text-amber-400 text-sm">
+          <div class="flex items-center text-yellow-400 text-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-4 w-4 fill-current"
@@ -131,7 +130,7 @@ import { WishlistService } from '../../services/wishlist.service';
                 d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
               />
             </svg>
-            <span class="ml-1 text-slate-500 font-medium">{{ product().rating }}</span>
+            <span class="ml-1 text-gray-500 font-medium">{{ product().rating }}</span>
           </div>
           }
 
@@ -139,15 +138,15 @@ import { WishlistService } from '../../services/wishlist.service';
           <div class="flex gap-3">
              <button
               (click)="onAddToCart()"
-              class="px-6 py-2 bg-slate-900 text-white rounded-full hover:bg-indigo-600 transition-colors font-medium text-sm"
+              class="px-6 py-2 bg-gray-900 text-white hover:bg-orange-500 transition-colors font-medium text-sm"
             >
               Add to Cart
             </button>
             <button
               (click)="onToggleWishlist()"
-              class="p-2 border border-slate-200 rounded-full hover:border-pink-500 hover:text-pink-500 transition-colors"
-              [class.text-pink-500]="isInWishlist()"
-              [class.border-pink-500]="isInWishlist()"
+              class="p-2 border border-gray-200 hover:border-red-500 hover:text-red-500 transition-colors"
+              [class.text-red-500]="isInWishlist()"
+              [class.border-red-500]="isInWishlist()"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -21,23 +21,23 @@ import { ProductCardComponent } from '../product-card/product-card.component';
   ],
   template: `
     <!-- Page Header / Banner -->
-    <section class="bg-[#F9F9F7] py-16 mb-12">
+    <section class="bg-white py-16 mb-12">
       <app-container>
         <div class="flex flex-col md:flex-row items-center justify-between gap-8">
           <!-- Title & Breadcrumbs -->
           <div class="text-center md:text-left">
-            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Shop</h1>
+            <h1 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">Shop</h1>
             <div
-              class="flex items-center justify-center md:justify-start gap-2 text-sm text-slate-500"
+              class="flex items-center justify-center md:justify-start gap-2 text-sm text-gray-500"
             >
-              <span class="hover:text-slate-900 cursor-pointer">Home</span>
-              <span class="text-slate-300">/</span>
-              <span class="text-slate-900">Shop</span>
+              <span class="hover:text-gray-900 cursor-pointer">Home</span>
+              <span class="text-gray-300">/</span>
+              <span class="text-gray-900">Shop</span>
             </div>
           </div>
 
           <!-- Optional: Banner Image Placeholder (to match the look) -->
-          <!-- <div class="hidden md:block w-1/2 h-64 bg-slate-200 rounded-lg"></div> -->
+          <div class="hidden md:block w-1/2 h-64 bg-gray-200 rounded-none"></div>
         </div>
       </app-container>
     </section>
@@ -46,11 +46,11 @@ import { ProductCardComponent } from '../product-card/product-card.component';
       <app-container>
         <!-- Filter Bar -->
         <div
-          class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-10 pb-6 border-b border-slate-100"
+          class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-10 pb-6 border-b border-gray-100"
         >
           <!-- Left: Filters -->
           <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
-            <span class="text-slate-500 font-medium">Filter by</span>
+            <span class="text-gray-500 font-medium">Filter by</span>
             <app-product-filters (filterChange)="onFilterChange($event)" />
           </div>
 
@@ -59,12 +59,12 @@ import { ProductCardComponent } from '../product-card/product-card.component';
             class="flex flex-wrap items-center gap-6 w-full lg:w-auto justify-between lg:justify-end"
           >
             <!-- Items Per Page -->
-            <div class="flex items-center gap-2 text-sm text-slate-500">
+            <div class="flex items-center gap-2 text-sm text-gray-500">
               <span>Show:</span>
               <select
                 [ngModel]="itemsPerPage()"
                 (ngModelChange)="onItemsPerPageChange($event)"
-                class="bg-transparent border-none font-medium text-slate-900 focus:ring-0 cursor-pointer"
+                class="bg-transparent border-none font-medium text-gray-900 focus:ring-0 cursor-pointer"
               >
                 <option [value]="8">8</option>
                 <option [value]="12">12</option>
@@ -72,22 +72,22 @@ import { ProductCardComponent } from '../product-card/product-card.component';
               </select>
             </div>
 
-            <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
+            <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
 
             <app-sort-dropdown [currentSort]="currentSort()" (sortChange)="onSortChange($event)" />
 
-            <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
+            <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
 
             <!-- Layout Toggles -->
             <div class="flex items-center gap-1">
               <!-- 3 Columns -->
               <button
                 (click)="setGridColumns(3)"
-                class="p-2 rounded transition-colors hidden md:block"
-                [class.text-indigo-600]="layout() === 'grid' && gridColumns() === 3"
-                [class.bg-indigo-50]="layout() === 'grid' && gridColumns() === 3"
-                [class.text-slate-400]="layout() !== 'grid' || gridColumns() !== 3"
-                [class.hover:text-slate-600]="layout() !== 'grid' || gridColumns() !== 3"
+                class="p-2 rounded-none transition-colors hidden md:block"
+                [class.text-orange-500]="layout() === 'grid' && gridColumns() === 3"
+                [class.bg-orange-50]="layout() === 'grid' && gridColumns() === 3"
+                [class.text-gray-400]="layout() !== 'grid' || gridColumns() !== 3"
+                [class.hover:text-gray-600]="layout() !== 'grid' || gridColumns() !== 3"
                 title="3 Columns"
               >
                 <svg
@@ -103,11 +103,11 @@ import { ProductCardComponent } from '../product-card/product-card.component';
               <!-- 4 Columns -->
               <button
                 (click)="setGridColumns(4)"
-                class="p-2 rounded transition-colors hidden lg:block"
-                [class.text-indigo-600]="layout() === 'grid' && gridColumns() === 4"
-                [class.bg-indigo-50]="layout() === 'grid' && gridColumns() === 4"
-                [class.text-slate-400]="layout() !== 'grid' || gridColumns() !== 4"
-                [class.hover:text-slate-600]="layout() !== 'grid' || gridColumns() !== 4"
+                class="p-2 rounded-none transition-colors hidden lg:block"
+                [class.text-orange-500]="layout() === 'grid' && gridColumns() === 4"
+                [class.bg-orange-50]="layout() === 'grid' && gridColumns() === 4"
+                [class.text-gray-400]="layout() !== 'grid' || gridColumns() !== 4"
+                [class.hover:text-gray-600]="layout() !== 'grid' || gridColumns() !== 4"
                 title="4 Columns"
               >
                 <svg
@@ -125,11 +125,11 @@ import { ProductCardComponent } from '../product-card/product-card.component';
               <!-- 5 Columns -->
               <button
                 (click)="setGridColumns(5)"
-                class="p-2 rounded transition-colors hidden xl:block"
-                [class.text-indigo-600]="layout() === 'grid' && gridColumns() === 5"
-                [class.bg-indigo-50]="layout() === 'grid' && gridColumns() === 5"
-                [class.text-slate-400]="layout() !== 'grid' || gridColumns() !== 5"
-                [class.hover:text-slate-600]="layout() !== 'grid' || gridColumns() !== 5"
+                class="p-2 rounded-none transition-colors hidden xl:block"
+                [class.text-orange-500]="layout() === 'grid' && gridColumns() === 5"
+                [class.bg-orange-50]="layout() === 'grid' && gridColumns() === 5"
+                [class.text-gray-400]="layout() !== 'grid' || gridColumns() !== 5"
+                [class.hover:text-gray-600]="layout() !== 'grid' || gridColumns() !== 5"
                 title="5 Columns"
               >
                 <svg
@@ -147,11 +147,11 @@ import { ProductCardComponent } from '../product-card/product-card.component';
               <!-- List View -->
               <button
                 (click)="layout.set('list')"
-                class="p-2 rounded transition-colors"
-                [class.text-indigo-600]="layout() === 'list'"
-                [class.bg-indigo-50]="layout() === 'list'"
-                [class.text-slate-400]="layout() !== 'list'"
-                [class.hover:text-slate-600]="layout() !== 'list'"
+                class="p-2 rounded-none transition-colors"
+                [class.text-orange-500]="layout() === 'list'"
+                [class.bg-orange-50]="layout() === 'list'"
+                [class.text-gray-400]="layout() !== 'list'"
+                [class.hover:text-gray-600]="layout() !== 'list'"
                 title="List View"
               >
                 <svg
@@ -174,10 +174,10 @@ import { ProductCardComponent } from '../product-card/product-card.component';
         </div>
 
         <!-- Results Summary -->
-        <div class="mb-6 text-sm text-slate-500">
-          Showing <span class="font-medium text-slate-900">{{ startItemIndex() }}</span> -
-          <span class="font-medium text-slate-900">{{ endItemIndex() }}</span> of
-          <span class="font-medium text-slate-900">{{ totalItems() }}</span> results
+        <div class="mb-6 text-sm text-gray-500">
+          Showing <span class="font-medium text-gray-900">{{ startItemIndex() }}</span> -
+          <span class="font-medium text-gray-900">{{ endItemIndex() }}</span> of
+          <span class="font-medium text-gray-900">{{ totalItems() }}</span> results
         </div>
 
         <!-- Product Grid -->

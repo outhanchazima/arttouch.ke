@@ -18,7 +18,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 mb-20">
           <!-- Left: Image Gallery -->
           <div class="space-y-4 lg:sticky lg:top-24 self-start">
-            <div class="aspect-4/3 lg:aspect-square w-full bg-slate-50 rounded-lg overflow-hidden relative group">
+            <div class="aspect-3/4 w-full bg-gray-50 overflow-hidden relative group">
               <img
                 [src]="selectedImage()"
                 [alt]="product().name"
@@ -32,7 +32,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
                 class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex items-center justify-center"
               >
                 <span
-                  class="bg-white/90 backdrop-blur px-4 py-2 rounded-full text-sm font-medium text-slate-900 shadow-sm"
+                  class="bg-white/90 backdrop-blur px-4 py-2 text-sm font-medium text-gray-900 shadow-sm"
                 >
                   Hover to zoom
                 </span>
@@ -42,8 +42,8 @@ import { ProductCardComponent } from '../product-card/product-card.component';
               @for (img of images(); track img) {
               <button
                 (click)="selectImage(img)"
-                class="w-20 h-20 rounded-lg overflow-hidden border transition-all duration-200 hover:opacity-100 shrink-0 snap-start"
-                [class.border-slate-900]="selectedImage() === img"
+                class="w-20 h-20 overflow-hidden border transition-all duration-200 hover:opacity-100 shrink-0 snap-start"
+                [class.border-gray-900]="selectedImage() === img"
                 [class.border-transparent]="selectedImage() !== img"
                 [class.opacity-60]="selectedImage() !== img"
               >
@@ -61,7 +61,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
               <app-badge variant="glass" class="flex items-center gap-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-3 w-3 fill-amber-400 text-amber-400"
+                  class="h-3 w-3 fill-yellow-400 text-yellow-400"
                   viewBox="0 0 20 20"
                 >
                   <path
@@ -73,19 +73,19 @@ import { ProductCardComponent } from '../product-card/product-card.component';
               }
             </div>
 
-            <h1 class="text-2xl lg:text-3xl font-medium text-slate-900 mb-2 tracking-tight">
+            <h1 class="text-2xl lg:text-3xl font-serif font-bold text-gray-900 mb-2 tracking-tight">
               {{ product().name }}
             </h1>
 
             <!-- Rating -->
             <div class="flex items-center gap-2 mb-4">
-              <div class="flex text-amber-400 text-sm">
+              <div class="flex text-yellow-400 text-sm">
                 @for (star of [1,2,3,4,5]; track star) {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-4 w-4"
                   [class.fill-current]="star <= Math.round(product().rating)"
-                  [class.text-slate-200]="star > Math.round(product().rating)"
+                  [class.text-gray-200]="star > Math.round(product().rating)"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -95,41 +95,41 @@ import { ProductCardComponent } from '../product-card/product-card.component';
                 </svg>
                 }
               </div>
-              <span class="text-slate-400 text-xs">Be the first to review</span>
+              <span class="text-gray-400 text-xs">Be the first to review</span>
             </div>
 
             <div class="mb-6">
-              <p class="text-2xl font-bold text-slate-900 mb-1">
+              <p class="text-2xl font-bold text-gray-900 mb-1">
                 KES {{ product().price | number }}
               </p>
-              <p class="text-xs text-slate-500">
+              <p class="text-xs text-gray-500">
                 Availability: <span class="text-green-600 font-medium">In Stock</span>
               </p>
             </div>
 
             <!-- Specs & Description -->
-            <div class="space-y-4 mb-8 text-sm text-slate-600">
+            <div class="space-y-4 mb-8 text-sm text-gray-600">
               <!-- Product Details Tabs -->
               <div class="mb-20">
-                <div class="border-b border-slate-200 mb-8 overflow-x-auto">
+                <div class="border-b border-gray-200 mb-8 overflow-x-auto">
                   <div class="flex gap-8 min-w-max">
                     @for (tab of tabs; track tab) {
                     <button
                       (click)="activeTab.set(tab)"
                       class="pb-4 text-sm font-medium transition-colors relative"
-                      [class.text-slate-900]="activeTab() === tab"
-                      [class.text-slate-500]="activeTab() !== tab"
+                      [class.text-gray-900]="activeTab() === tab"
+                      [class.text-gray-500]="activeTab() !== tab"
                     >
                       {{ tab }}
                       @if (activeTab() === tab) {
-                      <span class="absolute bottom-0 left-0 w-full h-0.5 bg-slate-900"></span>
+                      <span class="absolute bottom-0 left-0 w-full h-0.5 bg-gray-900"></span>
                       }
                     </button>
                     }
                   </div>
                 </div>
 
-                <div class="prose prose-slate max-w-none text-slate-600">
+                <div class="prose prose-gray max-w-none text-gray-600">
                   @if (activeTab() === 'Description') {
                   <p class="leading-relaxed">
                     {{ product().description || 'No description available.' }}
@@ -145,17 +145,17 @@ import { ProductCardComponent } from '../product-card/product-card.component';
                   <div class="mt-6 grid grid-cols-2 gap-4 max-w-md">
                     @if (product().dimensions) {
                     <div>
-                      <span class="block text-xs text-slate-400 uppercase tracking-wider"
+                      <span class="block text-xs text-gray-400 uppercase tracking-wider"
                         >Dimensions</span
                       >
-                      <span class="text-slate-900">{{ product().dimensions }}</span>
+                      <span class="text-gray-900">{{ product().dimensions }}</span>
                     </div>
                     } @if (product().material) {
                     <div>
-                      <span class="block text-xs text-slate-400 uppercase tracking-wider"
+                      <span class="block text-xs text-gray-400 uppercase tracking-wider"
                         >Material</span
                       >
-                      <span class="text-slate-900">{{ product().material }}</span>
+                      <span class="text-gray-900">{{ product().material }}</span>
                     </div>
                     }
                   </div>
@@ -169,21 +169,21 @@ import { ProductCardComponent } from '../product-card/product-card.component';
             </div>
 
             <!-- Options -->
-            <div class="space-y-6 mb-8 border-t border-slate-100 pt-6">
+            <div class="space-y-6 mb-8 border-t border-gray-100 pt-6">
               <!-- Color Selection -->
               @if (product().colors) {
               <div>
                 <div class="flex items-center justify-between mb-3">
-                  <h3 class="text-sm text-slate-500">Color</h3>
+                  <h3 class="text-sm text-gray-500">Color</h3>
                 </div>
                 <div class="flex gap-3">
                   @for (color of product().colors; track color) {
                   <button
                     (click)="selectedColor.set(color)"
-                    class="group relative w-8 h-8 rounded-full flex items-center justify-center transition-all focus:outline-none ring-1 ring-slate-200"
+                    class="group relative w-8 h-8 rounded-full flex items-center justify-center transition-all focus:outline-none ring-1 ring-gray-200"
                     [class.ring-2]="selectedColor() === color"
                     [class.ring-offset-2]="selectedColor() === color"
-                    [class.ring-slate-900]="selectedColor() === color"
+                    [class.ring-gray-900]="selectedColor() === color"
                   >
                     <span
                       class="w-full h-full rounded-full border border-white/10"
@@ -194,26 +194,26 @@ import { ProductCardComponent } from '../product-card/product-card.component';
                 </div>
               </div>
               } @else {
-              <p class="text-sm text-slate-400 italic">No color options available</p>
+              <p class="text-sm text-gray-400 italic">No color options available</p>
               }
 
               <!-- Actions -->
               <div class="flex items-center gap-4">
                 <!-- Quantity -->
-                <div class="flex items-center bg-slate-100 rounded px-1 h-12">
+                <div class="flex items-center bg-gray-100 px-1 h-12">
                   <button
                     (click)="decrementQty()"
-                    class="w-8 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors disabled:opacity-30"
+                    class="w-8 h-full flex items-center justify-center text-gray-500 hover:text-gray-900 transition-colors disabled:opacity-30"
                     [disabled]="quantity() <= 1"
                   >
                     -
                   </button>
-                  <span class="w-8 text-center font-medium text-slate-900 text-sm">{{
+                  <span class="w-8 text-center font-medium text-gray-900 text-sm">{{
                     quantity()
                   }}</span>
                   <button
                     (click)="incrementQty()"
-                    class="w-8 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors"
+                    class="w-8 h-full flex items-center justify-center text-gray-500 hover:text-gray-900 transition-colors"
                   >
                     +
                   </button>
@@ -223,7 +223,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
                 <button
                   (click)="addToCart()"
                   [disabled]="isAdding()"
-                  class="flex-1 h-12 bg-slate-100 hover:bg-slate-200 text-slate-900 font-medium text-sm uppercase tracking-wide transition-colors flex items-center justify-center gap-2 rounded"
+                  class="flex-1 h-12 bg-gray-100 hover:bg-gray-200 text-gray-900 font-medium text-sm uppercase tracking-wide transition-colors flex items-center justify-center gap-2"
                 >
                   @if (isAdding()) {
                   <span>Adding...</span>
@@ -237,7 +237,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
                 <!-- Wishlist -->
                 <button
                   (click)="toggleWishlist()"
-                  class="h-12 w-12 flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors"
+                  class="h-12 w-12 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -263,7 +263,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 
         <!-- Similar Products -->
         <div class="mb-20">
-          <h2 class="text-xl font-medium text-slate-900 mb-8">Similar Products</h2>
+          <h2 class="text-xl font-serif font-bold text-gray-900 mb-8">Similar Products</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @for (product of similarProducts(); track product.id) {
             <app-product-card [product]="product"></app-product-card>
@@ -273,7 +273,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 
         <!-- Featured Products (Reusing similar products for demo) -->
         <div>
-          <h2 class="text-xl font-medium text-slate-900 mb-8">Featured Products</h2>
+          <h2 class="text-xl font-serif font-bold text-gray-900 mb-8">Featured Products</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @for (product of featuredProducts(); track product.id) {
             <app-product-card [product]="product"></app-product-card>
