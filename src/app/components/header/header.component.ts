@@ -11,32 +11,34 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
   selector: 'app-header',
   imports: [CommonModule, FormsModule, RouterLink, ContainerComponent],
   template: `
-    <header class="relative bg-[#F9F9F7]">
+    <header class="relative bg-white">
       <app-container>
         <div class="flex items-center justify-between h-24">
           <!-- Logo -->
           <div class="shrink-0 cursor-pointer" routerLink="/">
-            <span class="text-3xl font-bold text-slate-900 tracking-tight"> ArtTouch </span>
+            <span class="text-3xl font-serif font-bold text-gray-900 tracking-tight">
+              <span class="text-orange-500">A</span>rtTouch
+            </span>
           </div>
 
           <!-- Desktop Navigation -->
           <nav class="hidden md:flex space-x-8">
-            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
+            <a href="/" class="text-gray-900 hover:text-orange-500 font-medium transition-colors"
               >Home</a
             >
-            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
+            <a href="/store" class="text-gray-900 hover:text-orange-500 font-medium transition-colors"
               >Shop</a
             >
-            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
+            <a href="#" class="text-gray-900 hover:text-orange-500 font-medium transition-colors"
               >Products</a
             >
-            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
+            <a href="#" class="text-gray-900 hover:text-orange-500 font-medium transition-colors"
               >Pages</a
             >
-            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
+            <a href="#" class="text-gray-900 hover:text-orange-500 font-medium transition-colors"
               >Blog</a
             >
-            <a href="#" class="text-slate-900 hover:text-slate-600 font-medium transition-colors"
+            <a href="#" class="text-gray-900 hover:text-orange-500 font-medium transition-colors"
               >Elements</a
             >
           </nav>
@@ -46,7 +48,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
             <!-- Search -->
             <button
               (click)="toggleSearch()"
-              class="p-2 text-slate-900 hover:text-slate-600 transition-colors"
+              class="p-2 text-gray-900 hover:text-orange-500 transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +69,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
             <!-- User (Account) -->
             <button
               routerLink="/login"
-              class="p-2 text-slate-900 hover:text-slate-600 transition-colors"
+              class="p-2 text-gray-900 hover:text-orange-500 transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +89,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
 
             <!-- Wishlist -->
             <button
-              class="relative p-2 text-slate-900 hover:text-slate-600 transition-colors group"
+              class="relative p-2 text-gray-900 hover:text-orange-500 transition-colors group"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +117,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
             <!-- Cart Button -->
             <button
               (click)="cartService.toggleCart()"
-              class="relative p-2 text-slate-900 hover:text-slate-600 transition-colors group"
+              class="relative p-2 text-gray-900 hover:text-orange-500 transition-colors group"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -143,7 +145,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
             <!-- Mobile Menu Button -->
             <button
               (click)="toggleMobileMenu()"
-              class="md:hidden p-2 text-slate-500 hover:text-indigo-600 rounded-full"
+              class="md:hidden p-2 text-gray-500 hover:text-orange-500 rounded-full"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -174,12 +176,12 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
 
       <div
         class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-50 shadow-xl transform transition-transform duration-300 md:hidden flex flex-col"
-        [class.translate-x-0]="isMobileMenuOpen()"
-        [class.-translate-x-full]="!isMobileMenuOpen()"
+        [class.trangray-x-0]="isMobileMenuOpen()"
+        [class.-trangray-x-full]="!isMobileMenuOpen()"
       >
-        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-          <span class="text-xl font-bold text-slate-900">Menu</span>
-          <button (click)="toggleMobileMenu()" class="p-2 text-slate-500 hover:text-slate-900">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+          <span class="text-xl font-bold text-gray-900">Menu</span>
+          <button (click)="toggleMobileMenu()" class="p-2 text-gray-500 hover:text-gray-900">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6"
@@ -201,53 +203,53 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
           <a
             routerLink="/"
             (click)="toggleMobileMenu()"
-            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+            class="block text-lg font-medium text-gray-900 hover:text-orange-500 transition-colors"
           >
             Home
           </a>
           <a
             href="#"
             (click)="toggleMobileMenu()"
-            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+            class="block text-lg font-medium text-gray-900 hover:text-orange-500 transition-colors"
           >
             Shop
           </a>
           <a
             href="#"
             (click)="toggleMobileMenu()"
-            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+            class="block text-lg font-medium text-gray-900 hover:text-orange-500 transition-colors"
           >
             Products
           </a>
           <a
             href="#"
             (click)="toggleMobileMenu()"
-            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+            class="block text-lg font-medium text-gray-900 hover:text-orange-500 transition-colors"
           >
             Pages
           </a>
           <a
             href="#"
             (click)="toggleMobileMenu()"
-            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+            class="block text-lg font-medium text-gray-900 hover:text-orange-500 transition-colors"
           >
             Blog
           </a>
           <a
             href="#"
             (click)="toggleMobileMenu()"
-            class="block text-lg font-medium text-slate-900 hover:text-indigo-600 transition-colors"
+            class="block text-lg font-medium text-gray-900 hover:text-orange-500 transition-colors"
           >
             Elements
           </a>
         </nav>
 
-        <div class="p-6 border-t border-slate-100 bg-slate-50">
+        <div class="p-6 border-t border-gray-100 bg-gray-50">
           <div class="flex flex-col gap-4">
             <a
               routerLink="/login"
               (click)="toggleMobileMenu()"
-              class="flex items-center gap-3 text-slate-600 font-medium"
+              class="flex items-center gap-3 text-gray-600 font-medium"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -267,7 +269,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
             </a>
             <button
               (click)="toggleMobileMenu(); wishlistService.toggleWishlist(null!)"
-              class="flex items-center gap-3 text-slate-600 font-medium"
+              class="flex items-center gap-3 text-gray-600 font-medium"
             >
               <!-- Note: wishlist toggle usually needs a product, but here we might just want to navigate to wishlist page if it existed. 
                    For now, I'll just keep the link or remove the action. 
@@ -306,7 +308,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
               <div class="relative flex-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"
+                  class="absolute left-4 top-1/2 -trangray-y-1/2 h-5 w-5 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -322,13 +324,13 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   type="text"
                   [(ngModel)]="searchQuery"
                   placeholder="Search for artworks..."
-                  class="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-xl text-lg focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all outline-none"
+                  class="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-xl text-lg focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none"
                   autoFocus
                 />
               </div>
               <button
                 (click)="toggleSearch()"
-                class="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
+                class="p-2 text-gray-400 hover:text-orange-500 rounded-full hover:bg-gray-100 transition-colors"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -350,12 +352,12 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
             <!-- Search Results Dropdown -->
             @if (searchQuery().length > 0) {
             <div
-              class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden max-h-[70vh] overflow-y-auto"
+              class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden max-h-[70vh] overflow-y-auto"
             >
               @if (searchResults().length > 0) {
               <div class="p-2">
                 <div
-                  class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-2"
+                  class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 py-2"
                 >
                   Products
                 </div>
@@ -363,9 +365,9 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                 <a
                   [routerLink]="['/product', product.id]"
                   (click)="closeSearch()"
-                  class="flex items-center gap-4 p-3 hover:bg-slate-50 rounded-lg transition-colors group"
+                  class="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors group"
                 >
-                  <div class="h-16 w-16 rounded-lg overflow-hidden bg-slate-100 shrink-0">
+                  <div class="h-16 w-16 rounded-lg overflow-hidden bg-gray-100 shrink-0">
                     <img
                       [src]="product.image"
                       [alt]="product.name"
@@ -374,18 +376,18 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   </div>
                   <div>
                     <h4
-                      class="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors"
+                      class="font-medium text-gray-900 group-hover:text-orange-500 transition-colors"
                     >
                       {{ product.name }}
                     </h4>
-                    <p class="text-sm text-slate-500">{{ product.category }}</p>
-                    <p class="text-sm font-semibold text-slate-900 mt-1">\${{ product.price }}</p>
+                    <p class="text-sm text-gray-500">{{ product.category }}</p>
+                    <p class="text-sm font-semibold text-gray-900 mt-1">\${{ product.price }}</p>
                   </div>
                 </a>
                 }
               </div>
               } @else {
-              <div class="p-8 text-center text-slate-500">
+              <div class="p-8 text-center text-gray-500">
                 <p>No results found for "{{ searchQuery() }}"</p>
               </div>
               }
