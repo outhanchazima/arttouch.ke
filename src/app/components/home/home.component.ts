@@ -152,13 +152,13 @@ import { ProductService } from '../../services/product.service';
           </div>
 
           <!-- Main Image -->
-          <div class="lg:col-span-5">
+          <div class="lg:col-span-5 mb-16 lg:mb-0">
             <div class="aspect-3/4 bg-white p-4 shadow-xl relative">
               <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1">Featured</div>
               <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=1000&auto=format&fit=crop" alt="Highlight" class="w-full h-full object-cover">
               
               <!-- Thumbnails -->
-              <div class="absolute -right-16 top-1/2 -translate-y-1/2 flex flex-col gap-4">
+              <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 flex flex-row gap-4 lg:flex-col lg:-right-16 lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto lg:left-auto lg:translate-x-0">
                 <div class="w-12 h-16 bg-white shadow-md p-1 cursor-pointer hover:scale-110 transition-transform">
                   <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover">
                 </div>
