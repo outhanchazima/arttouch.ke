@@ -12,12 +12,12 @@ import { ProductCardComponent } from '../product-card/product-card.component';
   selector: 'app-product-detail',
   imports: [CommonModule, ContainerComponent, ProductCardComponent],
   template: `
-    <!-- Main Product Section (Styled like Home Highlight) -->
-    <section class="py-12 lg:py-20 bg-gray-50">
+    <!-- Product Highlight -->
+    <section class="py-20 bg-gray-50">
       <app-container>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          <!-- Left Controls (Decorative) -->
-          <div class="hidden lg:flex lg:col-span-1 flex-col gap-8 items-center text-xs font-medium text-gray-400 pt-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <!-- Left Controls -->
+          <div class="hidden lg:flex lg:col-span-1 flex-col gap-8 items-center text-xs font-medium text-gray-400">
             <span>01</span>
             <div class="h-16 w-px bg-gray-300"></div>
             <span>02</span>
@@ -25,11 +25,9 @@ import { ProductCardComponent } from '../product-card/product-card.component';
           </div>
 
           <!-- Main Image -->
-          <div class="lg:col-span-5">
+          <div class="lg:col-span-5 mb-16 lg:mb-0">
             <div class="aspect-3/4 bg-white p-4 shadow-xl relative">
-              @if (product().rating >= 4.5) {
-              <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1 z-10">Top Rated</div>
-              }
+              <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1 z-10">Featured</div>
               
               <img 
                 [src]="selectedImage()" 
@@ -40,8 +38,8 @@ import { ProductCardComponent } from '../product-card/product-card.component';
                 (load)="onImageLoad()"
               >
               
-              <!-- Thumbnails (Desktop) -->
-              <div class="hidden lg:flex absolute -right-16 top-1/2 -translate-y-1/2 flex-col gap-4 z-20">
+              <!-- Thumbnails -->
+              <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 flex flex-row gap-4 lg:flex-col lg:-right-16 lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto lg:left-auto lg:translate-x-0 z-20">
                 @for (img of images(); track img) {
                 <div 
                   (click)="selectImage(img)"
@@ -54,20 +52,6 @@ import { ProductCardComponent } from '../product-card/product-card.component';
                 </div>
                 }
               </div>
-            </div>
-            
-            <!-- Thumbnails (Mobile) -->
-            <div class="flex lg:hidden gap-4 mt-6 overflow-x-auto pb-2">
-               @for (img of images(); track img) {
-                <div 
-                  (click)="selectImage(img)"
-                  class="w-16 h-20 bg-white shadow-md p-1 cursor-pointer shrink-0"
-                  [class.ring-2]="selectedImage() === img"
-                  [class.ring-orange-500]="selectedImage() === img"
-                >
-                  <img [src]="img" class="w-full h-full object-cover">
-                </div>
-                }
             </div>
           </div>
 
@@ -88,13 +72,15 @@ import { ProductCardComponent } from '../product-card/product-card.component';
               <span class="text-gray-400 text-xs">({{ product().rating }} Reviews)</span>
             </div>
 
-            <p class="text-gray-500 mb-8 max-w-md leading-relaxed">
+            <p class="text-gray-500 mb-6 max-w-md">
               {{ product().description }}
             </p>
             
             <div class="flex items-center gap-4 mb-8">
+              @if (product().originalPrice) {
+                <span class="text-gray-400 line-through text-lg">KES {{ product().originalPrice | number }}</span>
+              }
               <span class="text-3xl font-bold text-gray-900">KES {{ product().price | number }}</span>
-              <span class="text-green-600 text-sm font-medium bg-green-50 px-2 py-1 rounded">In Stock</span>
             </div>
 
             <div class="mb-8">
