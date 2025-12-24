@@ -24,212 +24,297 @@ import { PaystackService } from '../../services/paystack.service';
 
     <!-- Sidebar -->
     <div
-      class="fixed top-0 right-0 h-full w-full sm:w-[480px] bg-white z-50 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col"
+      class="fixed top-0 right-0 h-full w-full sm:w-[500px] bg-white z-50 shadow-2xl transform transition-transform duration-500 cubic-bezier(0.19, 1, 0.22, 1) flex flex-col"
       [class.translate-x-full]="!cartService.isCheckoutOpen()"
       [class.translate-x-0]="cartService.isCheckoutOpen()"
     >
       <!-- Header -->
-      <div
-        class="p-4 border-b border-gray-100 flex items-center justify-between bg-white"
-      >
+      <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-white z-10">
         <div class="flex items-center gap-3">
           <button
             (click)="goBackToCart()"
-            class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-full transition-colors"
+            class="p-2 -ml-2 text-gray-400 hover:text-gray-900 transition-colors"
+            title="Back to Cart"
           >
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h2 class="text-xl font-bold text-gray-900">Checkout</h2>
+          <h2 class="text-2xl font-serif font-bold text-gray-900">Checkout</h2>
         </div>
         <button
           (click)="cartService.toggleCheckout()"
-          class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-full transition-colors"
+          class="p-2 -mr-2 text-gray-400 hover:text-gray-900 transition-colors"
         >
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
 
-      <!-- Scrollable Content -->
-      <div class="flex-1 overflow-y-auto p-4 space-y-4">
-        <!-- Step Indicator -->
-        <div class="flex items-center gap-2 mb-2">
+      <!-- Step Indicator -->
+      <div class="px-8 pt-6 pb-2 bg-white">
+        <div class="flex items-center gap-2">
           @for (step of [1, 2, 3]; track step) {
-          <div class="flex items-center gap-2">
-            <span
-              class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
-              [class.bg-orange-500]="currentStep() >= step"
-              [class.text-white]="currentStep() >= step"
-              [class.bg-gray-200]="currentStep() < step"
-              [class.text-gray-500]="currentStep() < step"
-            >{{ step }}</span>
-            @if (step < 3) {
-            <div class="w-8 h-0.5" [class.bg-orange-500]="currentStep() > step" [class.bg-gray-200]="currentStep() <= step"></div>
-            }
-          </div>
+            <div class="flex items-center gap-3" [class.flex-1]="step < 3">
+              <div class="flex items-center gap-2">
+                <span 
+                  class="text-xs font-bold w-6 h-6 flex items-center justify-center border transition-colors duration-300"
+                  [class.bg-[#111]]="currentStep() >= step"
+                  [class.text-white]="currentStep() >= step"
+                  [class.border-[#111]]="currentStep() >= step"
+                  [class.text-gray-400]="currentStep() < step"
+                  [class.border-gray-200]="currentStep() < step"
+                >
+                  {{ step }}
+                </span>
+                <span 
+                  class="text-xs font-bold uppercase tracking-wider transition-colors duration-300"
+                  [class.text-gray-900]="currentStep() >= step"
+                  [class.text-gray-400]="currentStep() < step"
+                >
+                  @if (step === 1) { Location }
+                  @else if (step === 2) { Contact }
+                  @else { Review }
+                </span>
+              </div>
+              @if (step < 3) {
+                <div class="h-px bg-gray-100 flex-1"></div>
+              }
+            </div>
           }
         </div>
+      </div>
 
+      <!-- Scrollable Content -->
+      <div class="flex-1 overflow-y-auto px-8 py-6 space-y-8">
+        
         <!-- Step 1: Delivery Location -->
         @if (currentStep() === 1) {
-        <div class="space-y-3">
-          <h3 class="font-semibold text-gray-900">Delivery Location</h3>
-
-          <!-- Country -->
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Country</label>
-            <select
-              [formControl]="checkoutForm.controls.country"
-              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-            >
-              @for (country of locationService.getCountries(); track country.code) {
-              <option [value]="country.code">{{ country.name }}</option>
-              }
-            </select>
+        <div class="space-y-6 animate-fade-in">
+          <div class="space-y-1">
+            <h3 class="text-lg font-serif font-bold text-gray-900">Delivery Details</h3>
+            <p class="text-sm text-gray-500">Enter your location for accurate pricing.</p>
           </div>
 
-          <!-- County -->
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">County</label>
-            <select
-              [formControl]="checkoutForm.controls.county"
-              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-            >
-              <option value="">Select County</option>
-              @for (county of counties(); track county.id) {
-              <option [value]="county.id">{{ county.name }}</option>
-              }
-            </select>
-          </div>
+          <div class="grid gap-5">
+            <!-- Country -->
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Country</label>
+              <div class="relative">
+                <select
+                  [formControl]="checkoutForm.controls.country"
+                  class="w-full pl-4 pr-10 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all appearance-none cursor-pointer rounded-none"
+                >
+                  @for (country of locationService.getCountries(); track country.code) {
+                  <option [value]="country.code">{{ country.name }}</option>
+                  }
+                </select>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
 
-          <!-- Constituency -->
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Constituency</label>
-            <select
-              [formControl]="checkoutForm.controls.constituency"
-              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-            >
-              <option value="">Select Constituency</option>
-              @for (constituency of constituencies(); track constituency.id) {
-              <option [value]="constituency.id">{{ constituency.name }}</option>
-              }
-            </select>
-          </div>
+            <!-- County -->
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">County / State</label>
+              <div class="relative">
+                <select
+                  [formControl]="checkoutForm.controls.county"
+                  class="w-full pl-4 pr-10 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all appearance-none cursor-pointer rounded-none"
+                >
+                  <option value="">Select County</option>
+                  @for (county of counties(); track county.id) {
+                  <option [value]="county.id">{{ county.name }}</option>
+                  }
+                </select>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
 
-          <!-- Location -->
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Location/Area</label>
-            <select
-              [formControl]="checkoutForm.controls.location"
-              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-            >
-              <option value="">Select Location</option>
-              @for (loc of locations(); track loc.id) {
-              <option [value]="loc.id">{{ loc.name }}</option>
-              }
-            </select>
-          </div>
+            <div class="grid grid-cols-2 gap-4">
+              <!-- Constituency -->
+              <div class="space-y-2">
+                <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Constituency</label>
+                <div class="relative">
+                  <select
+                    [formControl]="checkoutForm.controls.constituency"
+                    class="w-full pl-4 pr-8 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all appearance-none cursor-pointer truncate rounded-none"
+                  >
+                    <option value="">Select</option>
+                    @for (constituency of constituencies(); track constituency.id) {
+                    <option [value]="constituency.id">{{ constituency.name }}</option>
+                    }
+                  </select>
+                  <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Location -->
+              <div class="space-y-2">
+                <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Area</label>
+                <div class="relative">
+                  <select
+                    [formControl]="checkoutForm.controls.location"
+                    class="w-full pl-4 pr-8 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all appearance-none cursor-pointer truncate rounded-none"
+                  >
+                    <option value="">Select</option>
+                    @for (loc of locations(); track loc.id) {
+                    <option [value]="loc.id">{{ loc.name }}</option>
+                    }
+                  </select>
+                  <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          <!-- Building -->
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Building/Apartment</label>
-            <input
-              type="text"
-              [formControl]="checkoutForm.controls.building"
-              placeholder="e.g., Westpark Towers, Floor 5"
-              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-            />
-          </div>
+            <!-- Building -->
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Building / Address</label>
+              <input
+                type="text"
+                [formControl]="checkoutForm.controls.building"
+                placeholder="e.g., Westpark Towers, Floor 5"
+                class="w-full px-4 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all placeholder:text-gray-400 rounded-none"
+              />
+            </div>
 
-          <!-- Instructions -->
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Delivery Instructions (Optional)</label>
-            <textarea
-              [formControl]="checkoutForm.controls.instructions"
-              rows="2"
-              placeholder="Gate code, landmark, etc."
-              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none resize-none"
-            ></textarea>
+            <!-- Instructions -->
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Instructions (Optional)</label>
+              <textarea
+                [formControl]="checkoutForm.controls.instructions"
+                rows="2"
+                placeholder="Gate code, landmark, or special requests..."
+                class="w-full px-4 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all resize-none placeholder:text-gray-400 rounded-none"
+              ></textarea>
+            </div>
           </div>
         </div>
         }
 
         <!-- Step 2: Contact Details -->
         @if (currentStep() === 2) {
-        <div class="space-y-3">
-          <h3 class="font-semibold text-gray-900">Contact Details</h3>
-
-          <!-- Phone -->
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Phone Number</label>
-            <div class="flex">
-              <span class="inline-flex items-center px-3 py-2.5 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50 text-gray-500 text-sm">
-                {{ selectedCountryPhoneCode() }}
-              </span>
-              <input
-                type="tel"
-                [formControl]="checkoutForm.controls.phone"
-                placeholder="712 345 678"
-                class="flex-1 px-3 py-2.5 text-sm border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-              />
-            </div>
-            @if (checkoutForm.controls.phone.invalid && checkoutForm.controls.phone.touched) {
-            <p class="mt-1 text-xs text-red-500">Please enter a valid phone number</p>
-            }
+        <div class="space-y-6 animate-fade-in">
+          <div class="space-y-1">
+            <h3 class="text-lg font-serif font-bold text-gray-900">Contact Information</h3>
+            <p class="text-sm text-gray-500">We'll use this for delivery updates.</p>
           </div>
 
-          <!-- Email -->
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Email Address</label>
-            <input
-              type="email"
-              [formControl]="checkoutForm.controls.email"
-              placeholder="you@example.com"
-              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-            />
-            @if (checkoutForm.controls.email.invalid && checkoutForm.controls.email.touched) {
-            <p class="mt-1 text-xs text-red-500">Please enter a valid email address</p>
-            }
+          <div class="grid gap-5">
+            <!-- Phone -->
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Phone Number</label>
+              <div class="group flex relative">
+                <span class="inline-flex items-center px-4 py-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-900 font-medium text-sm group-focus-within:border-[#111] transition-colors rounded-none">
+                  {{ selectedCountryPhoneCode() }}
+                </span>
+                <input
+                  type="tel"
+                  [formControl]="checkoutForm.controls.phone"
+                  placeholder="712 345 678"
+                  class="flex-1 px-4 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all placeholder:text-gray-400 rounded-none"
+                />
+              </div>
+              @if (checkoutForm.controls.phone.invalid && checkoutForm.controls.phone.touched) {
+              <p class="flex items-center gap-1 mt-1 text-xs text-red-500 font-medium animate-pulse">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Please enter a valid phone number
+              </p>
+              }
+            </div>
+
+            <!-- Email -->
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Email Address</label>
+              <input
+                type="email"
+                [formControl]="checkoutForm.controls.email"
+                placeholder="you@example.com"
+                class="w-full px-4 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all placeholder:text-gray-400 rounded-none"
+              />
+              @if (checkoutForm.controls.email.invalid && checkoutForm.controls.email.touched) {
+              <p class="flex items-center gap-1 mt-1 text-xs text-red-500 font-medium animate-pulse">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Please enter a valid email address
+              </p>
+              }
+            </div>
           </div>
         </div>
         }
 
         <!-- Step 3: Review & Pay -->
         @if (currentStep() === 3) {
-        <div class="space-y-4">
-          <h3 class="font-semibold text-gray-900">Review Order</h3>
-
-          <!-- Order Items -->
-          <div class="space-y-3 max-h-40 overflow-y-auto">
-            @for (item of cartService.items(); track item.product.id) {
-            <div class="flex gap-3">
-              <div class="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden shrink-0">
-                <img [src]="item.product.image" [alt]="item.product.name" class="w-full h-full object-cover" />
-              </div>
-              <div class="flex-1 min-w-0">
-                <h4 class="text-sm font-medium text-gray-900 truncate">{{ item.product.name }}</h4>
-                <p class="text-xs text-gray-500">Qty: {{ item.quantity }} × KES {{ item.product.price | number }}</p>
-              </div>
-            </div>
-            }
+        <div class="space-y-8 animate-fade-in">
+          <div class="space-y-1">
+            <h3 class="text-lg font-serif font-bold text-gray-900">Review & Pay</h3>
+            <p class="text-sm text-gray-500">Please double check your details.</p>
           </div>
 
-          <!-- Delivery Summary -->
-          <div class="bg-gray-50 rounded-lg p-3 text-sm">
-            <p class="font-medium text-gray-900 mb-1">Delivering to:</p>
-            <p class="text-gray-600 text-xs">
-              {{ checkoutForm.controls.building.value }}<br>
-              {{ getLocationName() }}, {{ getConstituencyName() }}<br>
-              {{ getCountyName() }}
-            </p>
+          <!-- Order Card -->
+          <div class="border border-gray-200 p-6 space-y-4 bg-gray-50/30">
+            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Items</h4>
+            <div class="space-y-4 max-h-48 overflow-y-auto pr-1">
+              @for (item of cartService.items(); track item.product.id) {
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-16 bg-gray-100 shrink-0 border border-gray-200">
+                  <img [src]="item.product.image" [alt]="item.product.name" class="w-full h-full object-cover" />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h4 class="text-sm font-bold text-gray-900 truncate">{{ item.product.name }}</h4>
+                  <p class="text-xs text-gray-500">{{ item.quantity }} x KES {{ item.product.price | number }}</p>
+                </div>
+                <div class="text-sm font-bold text-gray-900">
+                  KES {{ (item.product.price * item.quantity) | number }}
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+
+          <!-- Delivery Card -->
+          <div class="border border-gray-200 p-6">
+            <div class="flex justify-between items-start mb-4">
+              <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Delivery To</h4>
+              <button (click)="currentStep.set(1)" class="text-xs text-black font-bold border-b border-black hover:opacity-70">Edit</button>
+            </div>
+            <div class="text-sm text-gray-900 leading-relaxed font-light">
+              <p class="font-medium mb-1">{{ checkoutForm.controls.building.value }}</p>
+              <p class="text-gray-600">{{ getLocationName() }}, {{ getConstituencyName() }}</p>
+              <p class="text-gray-600">{{ getCountyName() }}</p>
+              @if (checkoutForm.controls.phone.value) {
+                <p class="mt-3 text-gray-900 flex items-center gap-2">
+                  <span class="text-xs font-bold uppercase tracking-wide text-gray-400">Contact:</span>
+                  {{ checkoutForm.controls.phone.value }}
+                </p>
+              }
+            </div>
           </div>
 
           @if (paymentError()) {
-          <div class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            {{ paymentError() }}
+          <div class="p-4 bg-red-50 border-l-2 border-red-500 flex gap-3 text-red-700 text-sm animate-fade-in">
+             <span>⚠️</span>
+             {{ paymentError() }}
           </div>
           }
         </div>
@@ -237,38 +322,32 @@ import { PaystackService } from '../../services/paystack.service';
       </div>
 
       <!-- Footer -->
-      <div class="p-4 border-t border-gray-100 bg-gray-50">
-        <!-- Order Summary -->
-        <div class="space-y-2 mb-4">
-          <div class="flex justify-between text-sm text-gray-600">
-            <span>Subtotal</span>
-            <span>KES {{ cartService.subtotal() | number }}</span>
+      <div class="p-8 border-t border-gray-100 bg-white absolute bottom-0 left-0 right-0 z-20">
+        <!-- Totals -->
+        <div class="flex justify-between items-end mb-8">
+          <div class="text-sm text-gray-500">
+            <p>Total Amount</p>
+            <p class="text-xs font-light">Includes Taxes</p>
           </div>
-          <div class="flex justify-between text-sm text-gray-600">
-            <span>VAT (16%)</span>
-            <span>KES {{ cartService.tax() | number: '1.2-2' }}</span>
-          </div>
-          <div class="flex justify-between text-base font-bold text-gray-900 pt-2 border-t border-gray-200">
-            <span>Total</span>
-            <span>KES {{ cartService.total() | number: '1.2-2' }}</span>
-          </div>
+          <p class="text-2xl font-serif font-bold text-gray-900">KES {{ cartService.total() | number: '1.2-2' }}</p>
         </div>
 
-        <!-- Navigation Buttons -->
-        <div class="flex gap-3">
+        <!-- Navigation -->
+        <div class="flex gap-4">
           @if (currentStep() > 1) {
           <button
             (click)="prevStep()"
-            class="flex-1 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+            class="px-8 py-3 border border-gray-300 text-gray-900 font-medium hover:bg-gray-50 transition-colors uppercase text-sm tracking-wide"
           >
             Back
           </button>
           }
+          
           @if (currentStep() < 3) {
           <button
             (click)="nextStep()"
             [disabled]="!canProceed()"
-            class="flex-1 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+            class="flex-1 py-3 bg-[#111] text-white font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed uppercase text-sm tracking-wide"
           >
             Continue
           </button>
@@ -276,7 +355,7 @@ import { PaystackService } from '../../services/paystack.service';
           <button
             (click)="processPayment()"
             [disabled]="paystackService.isProcessing()"
-            class="flex-1 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            class="flex-1 py-3 bg-orange-500 text-white font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase text-sm tracking-wide"
           >
             @if (paystackService.isProcessing()) {
             <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
@@ -285,7 +364,7 @@ import { PaystackService } from '../../services/paystack.service';
             </svg>
             Processing...
             } @else {
-            Pay with Paystack
+             Pay Now
             }
           </button>
           }
