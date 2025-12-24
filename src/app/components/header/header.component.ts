@@ -127,7 +127,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
              <a
                [routerLink]="item.link"
                (click)="toggleMobileMenu()"
-               class="group flex items-center gap-4 text-3xl font-serif font-bold text-gray-900 hover:text-orange-500 transition-colors transform transition-all duration-500"
+               class="group flex items-center gap-4 text-3xl font-serif font-bold text-gray-900 hover:text-orange-500 transform transition-all duration-500"
                [style.transition-delay]="(i * 100) + 'ms'"
                [class.translate-y-8]="!isMobileMenuOpen()"
                [class.opacity-0]="!isMobileMenuOpen()"
@@ -270,7 +270,7 @@ export class HeaderComponent {
   });
 
   toggleSearch() {
-    this.isSearchOpen.update((v) => !v);
+    this.isSearchOpen.update((v: boolean) => !v);
     if (!this.isSearchOpen()) {
       this.searchQuery.set('');
     }
@@ -282,6 +282,6 @@ export class HeaderComponent {
   }
 
   toggleMobileMenu() {
-    this.isMobileMenuOpen.update((v) => !v);
+    this.isMobileMenuOpen.update((v: boolean) => !v);
   }
 }
