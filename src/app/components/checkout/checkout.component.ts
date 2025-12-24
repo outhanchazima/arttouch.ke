@@ -23,7 +23,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
         </h1>
 
         @if (cartService.items().length === 0) {
-        <div class="text-center py-16 bg-white rounded-xl shadow-sm">
+        <div class="text-center py-16 bg-white border border-gray-100 shadow-sm">
           <svg
             class="w-16 h-16 mx-auto text-gray-300 mb-4"
             fill="none"
@@ -43,7 +43,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
           <p class="text-gray-500 mb-6">Add some items to get started</p>
           <a
             routerLink="/store"
-            class="inline-block px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
+            class="inline-block px-8 py-3 bg-[#111] text-white text-sm font-medium hover:bg-gray-800 transition-colors uppercase tracking-wide"
           >
             Continue Shopping
           </a>
@@ -53,10 +53,10 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
           <!-- Left: Forms -->
           <div class="lg:col-span-2 space-y-6">
             <!-- Step 1: Delivery Location -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="bg-white border border-gray-100 shadow-sm p-6">
               <div class="flex items-center gap-3 mb-6">
                 <span
-                  class="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold"
+                  class="w-8 h-8 bg-orange-500 text-white flex items-center justify-center text-sm font-bold"
                   >1</span
                 >
                 <h2 class="text-xl font-semibold text-gray-900">
@@ -75,7 +75,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   <select
                     id="country"
                     [formControl]="checkoutForm.controls.country"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                    class="w-full px-4 py-3 border border-gray-300 bg-white focus:border-orange-500 focus:ring-0 outline-none transition-all rounded-none"
                   >
                     @for (country of locationService.getCountries(); track
                     country.code) {
@@ -94,7 +94,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   <select
                     id="county"
                     [formControl]="checkoutForm.controls.county"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    class="w-full px-4 py-3 border border-gray-300 bg-white focus:border-orange-500 focus:ring-0 outline-none transition-all disabled:bg-gray-50 disabled:cursor-not-allowed rounded-none"
                     [class.text-gray-400]="!checkoutForm.controls.country.value"
                   >
                     <option value="">Select County</option>
@@ -114,7 +114,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   <select
                     id="constituency"
                     [formControl]="checkoutForm.controls.constituency"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    class="w-full px-4 py-3 border border-gray-300 bg-white focus:border-orange-500 focus:ring-0 outline-none transition-all disabled:bg-gray-50 disabled:cursor-not-allowed rounded-none"
                     [class.text-gray-400]="!checkoutForm.controls.county.value"
                   >
                     <option value="">Select Constituency</option>
@@ -137,7 +137,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   <select
                     id="location"
                     [formControl]="checkoutForm.controls.location"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    class="w-full px-4 py-3 border border-gray-300 bg-white focus:border-orange-500 focus:ring-0 outline-none transition-all disabled:bg-gray-50 disabled:cursor-not-allowed rounded-none"
                     [class.text-gray-400]="
                       !checkoutForm.controls.constituency.value
                     "
@@ -161,7 +161,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                     type="text"
                     [formControl]="checkoutForm.controls.building"
                     placeholder="e.g., Westpark Towers, Floor 5, Unit 501"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                    class="w-full px-4 py-3 border border-gray-300 focus:border-orange-500 focus:ring-0 outline-none transition-all rounded-none"
                   />
                 </div>
 
@@ -177,17 +177,17 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                     [formControl]="checkoutForm.controls.instructions"
                     rows="3"
                     placeholder="Any special delivery instructions (e.g., gate code, landmark, preferred delivery time)"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all resize-none"
+                    class="w-full px-4 py-3 border border-gray-300 focus:border-orange-500 focus:ring-0 outline-none transition-all resize-none rounded-none"
                   ></textarea>
                 </div>
               </div>
             </div>
 
             <!-- Step 2: Contact Details -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="bg-white border border-gray-100 shadow-sm p-6">
               <div class="flex items-center gap-3 mb-6">
                 <span
-                  class="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold"
+                  class="w-8 h-8 bg-orange-500 text-white flex items-center justify-center text-sm font-bold"
                   >2</span
                 >
                 <h2 class="text-xl font-semibold text-gray-900">
@@ -205,7 +205,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   >
                   <div class="flex">
                     <span
-                      class="inline-flex items-center px-4 py-3 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50 text-gray-500 text-sm"
+                      class="inline-flex items-center px-4 py-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm"
                     >
                       {{ selectedCountryPhoneCode() }}
                     </span>
@@ -214,7 +214,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                       type="tel"
                       [formControl]="checkoutForm.controls.phone"
                       placeholder="712 345 678"
-                      class="flex-1 px-4 py-3 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                      class="flex-1 px-4 py-3 border border-gray-300 focus:border-orange-500 focus:ring-0 outline-none transition-all rounded-none"
                     />
                   </div>
                   @if (checkoutForm.controls.phone.invalid &&
@@ -237,7 +237,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                     type="email"
                     [formControl]="checkoutForm.controls.email"
                     placeholder="you@example.com"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+                    class="w-full px-4 py-3 border border-gray-300 focus:border-orange-500 focus:ring-0 outline-none transition-all rounded-none"
                   />
                   @if (checkoutForm.controls.email.invalid &&
                   checkoutForm.controls.email.touched) {
@@ -250,10 +250,10 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
             </div>
 
             <!-- Step 3: Payment -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="bg-white border border-gray-100 shadow-sm p-6">
               <div class="flex items-center gap-3 mb-6">
                 <span
-                  class="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold"
+                  class="w-8 h-8 bg-orange-500 text-white flex items-center justify-center text-sm font-bold"
                   >3</span
                 >
                 <h2 class="text-xl font-semibold text-gray-900">Payment</h2>
@@ -262,14 +262,14 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
               <div class="space-y-4">
                 <!-- Paystack Option -->
                 <label
-                  class="flex items-center gap-4 p-4 border-2 border-orange-500 bg-orange-50 rounded-xl cursor-pointer"
+                  class="flex items-center gap-4 p-4 border border-orange-500 bg-orange-50/50 cursor-pointer hover:bg-orange-50 transition-colors"
                 >
                   <input
                     type="radio"
                     name="payment"
                     value="paystack"
                     checked
-                    class="w-5 h-5 text-orange-500 border-gray-300 focus:ring-orange-500"
+                    class="w-5 h-5 text-orange-500 border-gray-300 focus:ring-orange-500 rounded-none"
                   />
                   <div class="flex-1">
                     <span class="font-medium text-gray-900">Paystack</span>
@@ -287,7 +287,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
 
               @if (paymentError()) {
               <div
-                class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
+                class="mt-4 p-4 bg-red-50 border border-red-200 text-red-700 text-sm"
               >
                 {{ paymentError() }}
               </div>
@@ -298,7 +298,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
           <!-- Right: Order Summary -->
           <div class="lg:col-span-1">
             <div class="sticky top-24">
-              <div class="bg-white rounded-xl shadow-sm p-6">
+              <div class="bg-white border border-gray-100 shadow-sm p-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-6">
                   Order Summary
                 </h2>
@@ -307,7 +307,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   @for (item of cartService.items(); track item.product.id) {
                   <div class="flex gap-4">
                     <div
-                      class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0"
+                      class="w-16 h-16 bg-gray-100 overflow-hidden shrink-0"
                     >
                       <img
                         [src]="item.product.image"
@@ -355,7 +355,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   <button
                     (click)="processPayment()"
                     [disabled]="!isFormValid() || paystackService.isProcessing()"
-                    class="w-full py-4 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    class="w-full py-4 bg-[#111] text-white font-medium hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase tracking-wide text-sm"
                   >
                     @if (paystackService.isProcessing()) {
                     <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">

@@ -87,7 +87,7 @@ import { PaystackService } from '../../services/paystack.service';
       </div>
 
       <!-- Scrollable Content -->
-      <div class="flex-1 overflow-y-auto px-8 py-6 space-y-8">
+      <div class="flex-1 overflow-y-auto px-8 py-6 space-y-8 pb-40 overscroll-contain">
         
         <!-- Step 1: Delivery Location -->
         @if (currentStep() === 1) {
