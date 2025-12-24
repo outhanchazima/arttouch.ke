@@ -14,6 +14,7 @@ export class CartService {
   // State
   private cartItems = signal<CartItem[]>([]);
   isOpen = signal<boolean>(false);
+  isCheckoutOpen = signal<boolean>(false);
 
   // Computed
   count = computed(() => this.cartItems().reduce((acc, item) => acc + item.quantity, 0));
@@ -22,7 +23,7 @@ export class CartService {
     this.cartItems().reduce((acc, item) => acc + item.product.price * item.quantity, 0)
   );
 
-  tax = computed(() => this.subtotal() * 0.1); // 10% tax example
+  tax = computed(() => this.subtotal() * 0.16); // 16% VAT (Kenya)
 
   total = computed(() => this.subtotal() + this.tax());
 
@@ -66,7 +67,16 @@ export class CartService {
     );
   }
   toggleCart() {
-    this.isOpen.update((v) => !v);
+    this.isOpen.update((v: boolean) => !v);
+  }
+
+  toggleCheckout() {
+    this.isCheckoutOpen.update((v: boolean) => !v);
+  }
+
+  openCheckout() {
+    this.isOpen.set(false); // Close cart
+    this.isCheckoutOpen.set(true); // Open checkout
   }
 
   clearCart() {
