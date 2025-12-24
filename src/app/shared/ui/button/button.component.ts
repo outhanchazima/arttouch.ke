@@ -9,7 +9,7 @@ import { Component, input, output } from '@angular/core';
       [type]="type()"
       [disabled]="disabled()"
       (click)="onClick.emit($event)"
-      class="group relative flex justify-center items-center py-3 px-4 border text-sm font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="group relative flex justify-center items-center py-3 px-4 border text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-0 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide rounded-none"
       [class.w-full]="fullWidth()"
       [ngClass]="getVariantClasses()"
     >
@@ -28,15 +28,15 @@ export class ButtonComponent {
   getVariantClasses() {
     switch (this.variant()) {
       case 'primary':
-        return 'border-transparent text-white bg-slate-900 hover:bg-slate-800 focus:ring-slate-900';
+        return 'border-transparent text-white bg-[#111] hover:bg-gray-800';
       case 'secondary':
-        return 'border-transparent text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:ring-indigo-500';
+        return 'border-transparent text-gray-900 bg-gray-100 hover:bg-gray-200';
       case 'outline':
-        return 'border-slate-200 text-slate-700 bg-white hover:bg-slate-50 focus:ring-indigo-500';
+        return 'border-gray-300 text-gray-900 bg-white hover:bg-gray-50 hover:border-gray-400';
       case 'ghost':
-        return 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:ring-slate-500';
+        return 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50';
       default:
-        return 'border-transparent text-white bg-slate-900 hover:bg-slate-800 focus:ring-slate-900';
+        return 'border-transparent text-white bg-[#111] hover:bg-gray-800';
     }
   }
 }

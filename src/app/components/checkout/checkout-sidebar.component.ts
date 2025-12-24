@@ -16,7 +16,7 @@ import { PaystackService } from '../../services/paystack.service';
   template: `
     <!-- Backdrop -->
     <div
-      class="fixed inset-0 bg-black/50 z-50 transition-opacity duration-300"
+      class="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
       [class.opacity-0]="!cartService.isCheckoutOpen()"
       [class.pointer-events-none]="!cartService.isCheckoutOpen()"
       (click)="cartService.toggleCheckout()"
@@ -24,7 +24,7 @@ import { PaystackService } from '../../services/paystack.service';
 
     <!-- Sidebar -->
     <div
-      class="fixed top-0 right-0 h-full w-full sm:w-[500px] bg-white z-50 shadow-2xl transform transition-transform duration-500 cubic-bezier(0.19, 1, 0.22, 1) flex flex-col"
+      class="fixed top-0 right-0 w-full sm:w-[500px] bg-white z-50 shadow-2xl transform transition-transform duration-500 cubic-bezier(0.19, 1, 0.22, 1) flex flex-col h-dvh"
       [class.translate-x-full]="!cartService.isCheckoutOpen()"
       [class.translate-x-0]="cartService.isCheckoutOpen()"
     >

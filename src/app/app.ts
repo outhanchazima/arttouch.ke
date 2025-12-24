@@ -15,7 +15,7 @@ import { AnnouncementBarComponent } from './components/announcement-bar/announce
       <app-header />
       <app-cart-sidebar />
       <app-checkout-sidebar />
-      <main class="flex-grow">
+      <main class="grow">
         <router-outlet />
       </main>
       <app-footer />
