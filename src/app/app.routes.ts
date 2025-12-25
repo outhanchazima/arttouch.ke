@@ -5,6 +5,10 @@ import { ProductGridComponent } from './components/product-grid/product-grid.com
 import { SignupComponent } from './components/signup/signup.component';
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { FaqComponent } from './components/faq/faq.component';
+import { ShippingComponent } from './components/shipping/shipping.component';
+import { PrivacyComponent } from './components/privacy/privacy.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,5 +17,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'faq', component: FaqComponent },
+  { path: 'shipping', component: ShippingComponent },
+  { path: 'privacy', component: PrivacyComponent },
 ];
-
