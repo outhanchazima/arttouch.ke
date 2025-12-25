@@ -10,7 +10,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [CommonModule, ContainerComponent, ProductCardComponent],
+  imports: [CommonModule, ContainerComponent, ProductCardComponent, BadgeComponent],
   template: `
     <!-- Product Highlight -->
     <section class="py-20 bg-gray-50">
@@ -27,7 +27,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
           <!-- Main Image -->
           <div class="lg:col-span-5 mb-16 lg:mb-0">
             <div class="aspect-3/4 bg-white p-4 shadow-xl relative">
-              <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1 z-10">Featured</div>
+              <app-badge variant="featured" class="absolute top-4 right-4 z-10">Featured</app-badge>
               
               <img 
                 [src]="selectedImage()" 

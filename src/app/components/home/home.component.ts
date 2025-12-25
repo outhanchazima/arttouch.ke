@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ContainerComponent } from '../../shared/ui/container/container.component';
 import { ProductService } from '../../services/product.service';
+import { BadgeComponent } from '../../shared/ui/badge/badge.component';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, ContainerComponent, RouterLink],
+  imports: [CommonModule, ContainerComponent, RouterLink, BadgeComponent],
   template: `
     <!-- Hero Section -->
     <section class="pt-12 pb-20 bg-white">
@@ -60,7 +60,7 @@ import { ProductService } from '../../services/product.service';
           @for (product of newArrivals(); track product.id) {
             <div class="group cursor-pointer">
               <div class="relative aspect-3/4 bg-gray-100 mb-4 overflow-hidden">
-                <span class="absolute top-4 left-4 bg-orange-500 text-white text-xs font-bold px-2 py-1 z-10">New</span>
+                <app-badge variant="new" size="sm" class="absolute top-4 left-4 z-10">New</app-badge>
                 <img [src]="product.image" [alt]="product.name" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
               </div>
               <h3 class="font-medium text-gray-900 mb-1">{{ product.name }}</h3>
@@ -154,7 +154,7 @@ import { ProductService } from '../../services/product.service';
           <!-- Main Image -->
           <div class="lg:col-span-5 mb-16 lg:mb-0">
             <div class="aspect-3/4 bg-white p-4 shadow-xl relative">
-              <div class="absolute top-4 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1">Featured</div>
+              <app-badge variant="featured" class="absolute top-4 right-4 z-10">Featured</app-badge>
               <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=1000&auto=format&fit=crop" alt="Highlight" class="w-full h-full object-cover">
               
               <!-- Thumbnails -->

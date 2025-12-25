@@ -86,7 +86,7 @@ import { WishlistService } from '../../services/wishlist.service';
 
         <!-- Badge -->
         @if (product().rating >= 4.8) {
-        <app-badge variant="glass" size="sm" class="absolute top-3 left-3">Top Rated</app-badge>
+        <app-badge variant="featured" size="sm" class="absolute top-3 left-3">Top Rated</app-badge>
         }
       </div>
 

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 
-export type BadgeVariant = 'primary' | 'secondary' | 'outline' | 'accent' | 'ghost' | 'glass';
+export type BadgeVariant = 'primary' | 'secondary' | 'outline' | 'accent' | 'featured' | 'new' | 'glass';
 export type BadgeSize = 'sm' | 'md';
 
 @Component({
@@ -18,28 +18,31 @@ export class BadgeComponent {
 
   protected getClasses(): string {
     const baseClasses =
-      'inline-flex items-center justify-center font-semibold rounded-full transition-colors';
-    const sizeClasses = this.size() === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-3 py-1 text-sm';
+      'inline-flex items-center justify-center font-bold uppercase tracking-wide transition-colors';
+    const sizeClasses = this.size() === 'sm' ? 'px-2 py-0.5 text-[10px]' : 'px-3 py-1 text-xs';
 
     let variantClasses = '';
     switch (this.variant()) {
       case 'primary':
-        variantClasses = 'bg-slate-900 text-white';
+        variantClasses = 'bg-[#111] text-white';
         break;
       case 'secondary':
-        variantClasses = 'bg-slate-100 text-slate-900';
+        variantClasses = 'bg-gray-100 text-gray-900';
         break;
       case 'outline':
-        variantClasses = 'border border-slate-200 text-slate-700';
+        variantClasses = 'border border-gray-300 text-gray-700 bg-white';
         break;
       case 'accent':
-        variantClasses = 'bg-indigo-50 text-indigo-600 border border-indigo-100';
+        variantClasses = 'bg-gray-50 text-gray-900 border border-gray-200';
         break;
-      case 'ghost':
-        variantClasses = 'bg-transparent text-slate-600 hover:bg-slate-50';
+      case 'featured':
+        variantClasses = 'bg-orange-500 text-white';
+        break;
+      case 'new':
+        variantClasses = 'bg-orange-500 text-white';
         break;
       case 'glass':
-        variantClasses = 'bg-white/90 backdrop-blur text-indigo-600 shadow-sm';
+        variantClasses = 'bg-white/90 backdrop-blur text-gray-900 shadow-sm';
         break;
     }
 
