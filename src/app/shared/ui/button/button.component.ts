@@ -9,7 +9,7 @@ import { Component, input, output } from '@angular/core';
       [type]="type()"
       [disabled]="disabled()"
       (click)="onClick.emit($event)"
-      class="group relative flex justify-center items-center py-3 px-4 border text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-0 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide rounded-none"
+      class="group relative flex justify-center items-center py-2 px-4 border text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-0 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide rounded-none"
       [class.w-full]="fullWidth()"
       [ngClass]="getVariantClasses()"
     >

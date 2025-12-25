@@ -22,42 +22,37 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
   ],
   template: `
     <div
-      class="min-h-screen flex items-center justify-center bg-[#F9F9F7] py-12 px-4 sm:px-6 lg:px-8"
+      class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
     >
       <div class="max-w-md w-full">
         <app-card>
           <!-- Logo & Header -->
           <div class="text-center mb-8">
-            <div
-              class="mx-auto h-16 w-16 flex items-center justify-center border-2 border-slate-900 rounded-none mb-6"
-            >
-              <span class="text-3xl font-bold text-slate-900">A</span>
-            </div>
-            <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Welcome Back</h2>
-            <p class="mt-2 text-sm text-slate-500">
+            <h2 class="text-3xl font-serif font-bold text-gray-900 tracking-tight">Welcome Back</h2>
+            <p class="mt-2 text-sm text-gray-500">
               Sign in to your ArtTouch account to access your personalized dashboard
             </p>
           </div>
 
           <!-- Login Method Toggle -->
-          <div class="bg-slate-50 p-1 rounded-lg flex mb-8">
+          <div class="bg-gray-100 p-1 rounded-none flex mb-8">
             <button
               (click)="loginMethod.set('password')"
-              class="flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200"
-              [class.bg-white]="loginMethod() === 'password'"
-              [class.shadow-sm]="loginMethod() === 'password'"
-              [class.text-slate-900]="loginMethod() === 'password'"
-              [class.text-slate-500]="loginMethod() !== 'password'"
+              class="flex-1 py-2 text-sm font-medium rounded-none transition-all duration-300"
+              [class.bg-[#111]]="loginMethod() === 'password'"
+              [class.text-white]="loginMethod() === 'password'"
+              [class.text-gray-500]="loginMethod() !== 'password'"
+              [class.hover:text-gray-900]="loginMethod() !== 'password'"
             >
               Password
             </button>
             <button
               (click)="loginMethod.set('otp')"
-              class="flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200"
-              [class.bg-white]="loginMethod() === 'otp'"
-              [class.shadow-sm]="loginMethod() === 'otp'"
-              [class.text-slate-900]="loginMethod() === 'otp'"
-              [class.text-slate-500]="loginMethod() !== 'otp'"
+              class="flex-1 py-2 text-sm font-medium rounded-none transition-all duration-300"
+              [class.bg-[#111]]="loginMethod() === 'otp'"
+              [class.text-white]="loginMethod() === 'otp'"
+              [class.text-gray-500]="loginMethod() !== 'otp'"
+              [class.hover:text-gray-900]="loginMethod() !== 'otp'"
             >
               OTP
             </button>
@@ -107,21 +102,21 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
                 />
               </app-form-field>
 
-              <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <input
                     id="remember-me"
                     type="checkbox"
                     [field]="loginForm.rememberMe"
-                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                    class="h-4 w-4 text-[#111] focus:ring-[#111] border-gray-300 rounded-none bg-gray-50"
                   />
-                  <label for="remember-me" class="ml-2 block text-sm text-slate-600">
+                  <label for="remember-me" class="ml-2 block text-sm text-gray-600">
                     Remember me
                   </label>
                 </div>
 
                 <div class="text-sm">
-                  <a href="#" class="font-medium text-slate-500 hover:text-slate-900">
+                  <a href="#" class="font-medium text-gray-500 hover:text-gray-900 underline-offset-4 hover:underline">
                     Forgot password?
                   </a>
                 </div>
@@ -145,8 +140,8 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
             </app-button>
 
             <div class="text-center text-sm">
-              <span class="text-slate-500">Don't have an account? </span>
-              <a routerLink="/signup" class="font-medium text-slate-900 hover:underline">
+              <span class="text-gray-500">Don't have an account? </span>
+              <a routerLink="/signup" class="font-bold text-gray-900 hover:underline uppercase tracking-wide text-xs">
                 Sign Up
               </a>
             </div>
@@ -155,17 +150,17 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
           <!-- Divider -->
           <div class="relative my-6">
             <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-slate-200"></div>
+              <div class="w-full border-t border-gray-200"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-slate-500">or</span>
+              <span class="px-2 bg-white text-gray-500 uppercase tracking-widest text-xs">or</span>
             </div>
           </div>
 
           <!-- Social Login -->
           <button
             type="button"
-            class="w-full flex items-center justify-center gap-3 px-4 py-3 border border-slate-200 rounded-xl shadow-sm bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
+            class="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-none bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:border-[#111] transition-all uppercase tracking-wide"
           >
             <svg class="h-5 w-5" viewBox="0 0 24 24">
               <path

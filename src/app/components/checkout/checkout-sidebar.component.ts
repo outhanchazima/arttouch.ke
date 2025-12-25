@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { email, Field, form, required } from '@angular/forms/signals';
 import { CartService } from '../../services/cart.service';
 import {
   Constituency,
@@ -9,10 +10,13 @@ import {
   LocationService,
 } from '../../services/location.service';
 import { PaystackService } from '../../services/paystack.service';
+import { ButtonComponent } from '../../shared/ui/button/button.component';
+import { FormFieldComponent } from '../../shared/ui/form-field/form-field.component';
+import { InputDirective } from '../../shared/ui/input/input.directive';
 
 @Component({
   selector: 'app-checkout-sidebar',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, Field, ButtonComponent, FormFieldComponent, InputDirective],
   template: `
     <!-- Backdrop -->
     <div
@@ -99,11 +103,11 @@ import { PaystackService } from '../../services/paystack.service';
 
           <div class="grid gap-5">
             <!-- Country -->
-            <div class="space-y-2">
-              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Country</label>
+            <app-form-field label="Country" for="country">
               <div class="relative">
                 <select
-                  [formControl]="checkoutForm.controls.country"
+                  id="country"
+                  [field]="checkoutForm.country"
                   class="w-full pl-4 pr-10 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all appearance-none cursor-pointer rounded-none"
                 >
                   @for (country of locationService.getCountries(); track country.code) {
@@ -116,14 +120,14 @@ import { PaystackService } from '../../services/paystack.service';
                   </svg>
                 </div>
               </div>
-            </div>
+            </app-form-field>
 
             <!-- County -->
-            <div class="space-y-2">
-              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">County / State</label>
+            <app-form-field label="County / State" for="county">
               <div class="relative">
                 <select
-                  [formControl]="checkoutForm.controls.county"
+                  id="county"
+                  [field]="checkoutForm.county"
                   class="w-full pl-4 pr-10 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all appearance-none cursor-pointer rounded-none"
                 >
                   <option value="">Select County</option>
@@ -137,15 +141,15 @@ import { PaystackService } from '../../services/paystack.service';
                   </svg>
                 </div>
               </div>
-            </div>
+            </app-form-field>
 
             <div class="grid grid-cols-2 gap-4">
               <!-- Constituency -->
-              <div class="space-y-2">
-                <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Constituency</label>
+              <app-form-field label="Constituency" for="constituency">
                 <div class="relative">
                   <select
-                    [formControl]="checkoutForm.controls.constituency"
+                    id="constituency"
+                    [field]="checkoutForm.constituency"
                     class="w-full pl-4 pr-8 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all appearance-none cursor-pointer truncate rounded-none"
                   >
                     <option value="">Select</option>
@@ -159,14 +163,14 @@ import { PaystackService } from '../../services/paystack.service';
                     </svg>
                   </div>
                 </div>
-              </div>
+              </app-form-field>
   
               <!-- Location -->
-              <div class="space-y-2">
-                <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Area</label>
+              <app-form-field label="Area" for="location">
                 <div class="relative">
                   <select
-                    [formControl]="checkoutForm.controls.location"
+                    id="location"
+                    [field]="checkoutForm.location"
                     class="w-full pl-4 pr-8 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all appearance-none cursor-pointer truncate rounded-none"
                   >
                     <option value="">Select</option>
@@ -180,30 +184,30 @@ import { PaystackService } from '../../services/paystack.service';
                     </svg>
                   </div>
                 </div>
-              </div>
+              </app-form-field>
             </div>
 
             <!-- Building -->
-            <div class="space-y-2">
-              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Building / Address</label>
+            <app-form-field label="Building / Address" for="building">
               <input
+                id="building"
                 type="text"
-                [formControl]="checkoutForm.controls.building"
+                appInput
+                [field]="checkoutForm.building"
                 placeholder="e.g., Westpark Towers, Floor 5"
-                class="w-full px-4 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all placeholder:text-gray-400 rounded-none"
               />
-            </div>
+            </app-form-field>
 
             <!-- Instructions -->
-            <div class="space-y-2">
-              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Instructions (Optional)</label>
+            <app-form-field label="Instructions (Optional)" for="instructions">
               <textarea
-                [formControl]="checkoutForm.controls.instructions"
+                id="instructions"
+                [field]="checkoutForm.instructions"
                 rows="2"
                 placeholder="Gate code, landmark, or special requests..."
                 class="w-full px-4 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all resize-none placeholder:text-gray-400 rounded-none"
               ></textarea>
-            </div>
+            </app-form-field>
           </div>
         </div>
         }
@@ -218,47 +222,40 @@ import { PaystackService } from '../../services/paystack.service';
 
           <div class="grid gap-5">
             <!-- Phone -->
-            <div class="space-y-2">
-              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Phone Number</label>
+            <app-form-field 
+              label="Phone Number" 
+              for="phone"
+              [errorMessage]="checkoutForm.phone().touched() && !checkoutForm.phone().valid() ? 'Please enter a valid phone number' : ''"
+            >
               <div class="group flex relative">
                 <span class="inline-flex items-center px-4 py-3 border border-r-0 border-gray-300 bg-gray-50 text-gray-900 font-medium text-sm group-focus-within:border-[#111] transition-colors rounded-none">
                   {{ selectedCountryPhoneCode() }}
                 </span>
                 <input
+                  id="phone"
                   type="tel"
-                  [formControl]="checkoutForm.controls.phone"
+                  [field]="checkoutForm.phone"
                   placeholder="712 345 678"
                   class="flex-1 px-4 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all placeholder:text-gray-400 rounded-none"
                 />
               </div>
-              @if (checkoutForm.controls.phone.invalid && checkoutForm.controls.phone.touched) {
-              <p class="flex items-center gap-1 mt-1 text-xs text-red-500 font-medium animate-pulse">
-                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Please enter a valid phone number
-              </p>
-              }
-            </div>
+            </app-form-field>
 
             <!-- Email -->
-            <div class="space-y-2">
-              <label class="text-xs font-bold text-gray-900 uppercase tracking-wide">Email Address</label>
+            <app-form-field 
+              label="Email Address" 
+              for="email"
+              [errorMessage]="checkoutForm.email().touched() && !checkoutForm.email().valid() ? 'Please enter a valid email address' : ''"
+            >
               <input
+                id="email"
                 type="email"
-                [formControl]="checkoutForm.controls.email"
+                appInput
+                [field]="checkoutForm.email"
+                [hasError]="checkoutForm.email().touched() && !checkoutForm.email().valid()"
                 placeholder="you@example.com"
-                class="w-full px-4 py-3 text-sm border border-gray-300 bg-white focus:border-[#111] focus:ring-0 outline-none transition-all placeholder:text-gray-400 rounded-none"
               />
-              @if (checkoutForm.controls.email.invalid && checkoutForm.controls.email.touched) {
-              <p class="flex items-center gap-1 mt-1 text-xs text-red-500 font-medium animate-pulse">
-                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Please enter a valid email address
-              </p>
-              }
-            </div>
+            </app-form-field>
           </div>
         </div>
         }
@@ -299,13 +296,13 @@ import { PaystackService } from '../../services/paystack.service';
               <button (click)="currentStep.set(1)" class="text-xs text-black font-bold border-b border-black hover:opacity-70">Edit</button>
             </div>
             <div class="text-sm text-gray-900 leading-relaxed font-light">
-              <p class="font-medium mb-1">{{ checkoutForm.controls.building.value }}</p>
+              <p class="font-medium mb-1">{{ checkoutModel().building }}</p>
               <p class="text-gray-600">{{ getLocationName() }}, {{ getConstituencyName() }}</p>
               <p class="text-gray-600">{{ getCountyName() }}</p>
-              @if (checkoutForm.controls.phone.value) {
+              @if (checkoutModel().phone) {
                 <p class="mt-3 text-gray-900 flex items-center gap-2">
                   <span class="text-xs font-bold uppercase tracking-wide text-gray-400">Contact:</span>
-                  {{ checkoutForm.controls.phone.value }}
+                  {{ checkoutModel().phone }}
                 </p>
               }
             </div>
@@ -335,22 +332,19 @@ import { PaystackService } from '../../services/paystack.service';
         <!-- Navigation -->
         <div class="flex gap-4">
           @if (currentStep() > 1) {
-          <button
-            (click)="prevStep()"
-            class="px-8 py-3 border border-gray-300 text-gray-900 font-medium hover:bg-gray-50 transition-colors uppercase text-sm tracking-wide"
-          >
+          <app-button variant="outline" (onClick)="prevStep()">
             Back
-          </button>
+          </app-button>
           }
           
           @if (currentStep() < 3) {
-          <button
-            (click)="nextStep()"
-            [disabled]="!canProceed()"
-            class="flex-1 py-3 bg-[#111] text-white font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed uppercase text-sm tracking-wide"
+          <app-button 
+            [fullWidth]="true" 
+            [disabled]="!canProceed()" 
+            (onClick)="nextStep()"
           >
             Continue
-          </button>
+          </app-button>
           } @else {
           <button
             (click)="processPayment()"
@@ -374,8 +368,6 @@ import { PaystackService } from '../../services/paystack.service';
   `,
 })
 export class CheckoutSidebarComponent {
-  private fb = inject(FormBuilder);
-
   cartService = inject(CartService);
   locationService = inject(LocationService);
   paystackService = inject(PaystackService);
@@ -383,21 +375,32 @@ export class CheckoutSidebarComponent {
   currentStep = signal(1);
   paymentError = signal<string | null>(null);
 
-  checkoutForm = this.fb.group({
-    country: ['KE', Validators.required],
-    county: ['', Validators.required],
-    constituency: ['', Validators.required],
-    location: ['', Validators.required],
-    building: ['', Validators.required],
-    instructions: [''],
-    phone: ['', [Validators.required, Validators.pattern(/^\d{9,12}$/)]],
-    email: ['', [Validators.required, Validators.email]],
+  checkoutModel = signal({
+    country: 'KE',
+    county: '',
+    constituency: '',
+    location: '',
+    building: '',
+    instructions: '',
+    phone: '',
+    email: '',
+  });
+
+  checkoutForm = form(this.checkoutModel, (s) => {
+    required(s.country);
+    required(s.county);
+    required(s.constituency);
+    required(s.location);
+    required(s.building);
+    required(s.phone);
+    required(s.email);
+    email(s.email);
   });
 
   // Signals to track form values for reactivity
-  private selectedCountryCode = signal('KE');
-  private selectedCountyId = signal('');
-  private selectedConstituencyId = signal('');
+  private selectedCountryCode = computed(() => this.checkoutModel().country);
+  private selectedCountyId = computed(() => this.checkoutModel().county);
+  private selectedConstituencyId = computed(() => this.checkoutModel().constituency);
 
   counties = computed<County[]>(() => {
     const countryCode = this.selectedCountryCode();
@@ -426,27 +429,6 @@ export class CheckoutSidebarComponent {
     return country?.phoneCode ?? '+254';
   });
 
-  constructor() {
-    // Subscribe to form changes and update signals
-    this.checkoutForm.controls.country.valueChanges.subscribe((value) => {
-      this.selectedCountryCode.set(value ?? 'KE');
-      this.checkoutForm.controls.county.setValue('');
-      this.checkoutForm.controls.constituency.setValue('');
-      this.checkoutForm.controls.location.setValue('');
-    });
-
-    this.checkoutForm.controls.county.valueChanges.subscribe((value) => {
-      this.selectedCountyId.set(value ?? '');
-      this.checkoutForm.controls.constituency.setValue('');
-      this.checkoutForm.controls.location.setValue('');
-    });
-
-    this.checkoutForm.controls.constituency.valueChanges.subscribe((value) => {
-      this.selectedConstituencyId.set(value ?? '');
-      this.checkoutForm.controls.location.setValue('');
-    });
-  }
-
   goBackToCart() {
     this.cartService.isCheckoutOpen.set(false);
     this.cartService.isOpen.set(true);
@@ -454,17 +436,18 @@ export class CheckoutSidebarComponent {
 
   canProceed(): boolean {
     if (this.currentStep() === 1) {
+      const model = this.checkoutModel();
       return (
-        !!this.checkoutForm.controls.county.value &&
-        !!this.checkoutForm.controls.constituency.value &&
-        !!this.checkoutForm.controls.location.value &&
-        !!this.checkoutForm.controls.building.value
+        !!model.county &&
+        !!model.constituency &&
+        !!model.location &&
+        !!model.building
       );
     }
     if (this.currentStep() === 2) {
       return (
-        this.checkoutForm.controls.phone.valid &&
-        this.checkoutForm.controls.email.valid
+        this.checkoutForm.phone().valid() &&
+        this.checkoutForm.email().valid()
       );
     }
     return true;
@@ -483,42 +466,42 @@ export class CheckoutSidebarComponent {
   }
 
   getCountyName(): string {
-    const county = this.counties().find((c) => c.id === this.checkoutForm.controls.county.value);
+    const county = this.counties().find((c) => c.id === this.checkoutModel().county);
     return county?.name ?? '';
   }
 
   getConstituencyName(): string {
     const constituency = this.constituencies().find(
-      (c) => c.id === this.checkoutForm.controls.constituency.value
+      (c) => c.id === this.checkoutModel().constituency
     );
     return constituency?.name ?? '';
   }
 
   getLocationName(): string {
-    const location = this.locations().find((l) => l.id === this.checkoutForm.controls.location.value);
+    const location = this.locations().find((l) => l.id === this.checkoutModel().location);
     return location?.name ?? '';
   }
 
   async processPayment(): Promise<void> {
     this.paymentError.set(null);
 
-    const email = this.checkoutForm.controls.email.value!;
+    const model = this.checkoutModel();
     const amount = this.cartService.total();
     const reference = this.paystackService.generateReference();
 
     try {
       const response = await this.paystackService.pay({
-        email,
+        email: model.email,
         amount,
         reference,
         currency: 'KES',
-        phone: this.checkoutForm.controls.phone.value ?? undefined,
+        phone: model.phone || undefined,
         metadata: {
           county: this.getCountyName(),
           constituency: this.getConstituencyName(),
           location: this.getLocationName(),
-          building: this.checkoutForm.controls.building.value,
-          instructions: this.checkoutForm.controls.instructions.value,
+          building: model.building,
+          instructions: model.instructions,
           items: this.cartService.items().map((item) => ({
             id: item.product.id,
             name: item.product.name,
@@ -532,7 +515,16 @@ export class CheckoutSidebarComponent {
       this.cartService.clearCart();
       this.cartService.isCheckoutOpen.set(false);
       this.currentStep.set(1);
-      this.checkoutForm.reset({ country: 'KE' });
+      this.checkoutModel.set({
+        country: 'KE',
+        county: '',
+        constituency: '',
+        location: '',
+        building: '',
+        instructions: '',
+        phone: '',
+        email: '',
+      });
       alert('Payment successful! Reference: ' + response.reference);
     } catch (error) {
       if (error instanceof Error && error.message === 'Payment cancelled by user') {
