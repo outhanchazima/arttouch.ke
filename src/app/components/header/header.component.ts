@@ -82,12 +82,12 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
 
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex space-x-8">
-              <a href="/" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Home</a>
-              <a href="/store" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Shop</a>
-              <a href="#" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Products</a>
-              <a href="#" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Pages</a>
-              <a href="#" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Blog</a>
-              <a href="#" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Elements</a>
+              <a routerLink="/" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Home</a>
+              <a routerLink="/store" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Shop</a>
+              <a routerLink="/services" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Services</a>
+              <a routerLink="/blog" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Blog</a>
+              <a routerLink="/about" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">About</a>
+              <a routerLink="/contact" class="text-gray-900 hover:text-orange-500 font-medium transition-colors">Contact</a>
             </nav>
 
             <!-- Mobile Menu Trigger -->
@@ -260,7 +260,8 @@ export class HeaderComponent {
   menuItems = [
     { label: 'Home', link: '/' },
     { label: 'Shop', link: '/store' },
-    { label: 'Products', link: '/products' },
+    { label: 'Services', link: '/services' },
+    { label: 'Blog', link: '/blog' },
     { label: 'About', link: '/about' },
     { label: 'Contact', link: '/contact' },
   ];

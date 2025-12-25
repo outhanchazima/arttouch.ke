@@ -11,6 +11,8 @@ import { ShippingComponent } from './components/shipping/shipping.component';
 import { PrivacyComponent } from './components/privacy/privacy.component';
 import { ServicesComponent } from './components/services/services.component';
 import { ServiceDetailComponent } from './components/services/service-detail.component';
+import { BlogComponent } from './components/blog/blog.component';
+import { BlogPostComponent } from './components/blog/blog-post.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,4 +27,6 @@ export const routes: Routes = [
   { path: 'privacy', component: PrivacyComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'services/:id', component: ServiceDetailComponent },
+  { path: 'blog', component: BlogComponent },
+  { path: 'blog/:slug', component: BlogPostComponent },
 ];
