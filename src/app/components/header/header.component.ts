@@ -6,10 +6,11 @@ import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { ContainerComponent } from '../../shared/ui/container/container.component';
+import { InputDirective } from '../../shared/ui/input/input.directive';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, FormsModule, RouterLink, ContainerComponent],
+  imports: [CommonModule, FormsModule, RouterLink, ContainerComponent, InputDirective],
   template: `
     <header class="relative bg-white z-40">
       <!-- Top Bar -->
@@ -144,7 +145,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
       <!-- Search Overlay -->
       @if (isSearchOpen()) {
       <div
-        class="absolute top-0 left-0 right-0 bg-white z-50 shadow-lg animate-in slide-in-from-top-5 duration-300"
+        class="absolute top-0 left-0 right-0 bg-white z-50 shadow-lg border-b border-gray-200 animate-in slide-in-from-top-5 duration-300"
       >
         <div class="container mx-auto px-4 py-6">
           <div class="relative max-w-3xl mx-auto">
@@ -168,13 +169,14 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   type="text"
                   [(ngModel)]="searchQuery"
                   placeholder="Search for artworks..."
-                  class="w-full pl-12 pr-4 py-2 bg-gray-50 border-none rounded-xl text-base focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all outline-none"
-                  autoFocus
+                  appInput
+                  class="pl-12! pr-4! py-2! focus:ring-orange-500 focus:bg-white transition-all outline-none"
+                  autofocus
                 />
               </div>
               <button
                 (click)="toggleSearch()"
-                class="p-2 text-gray-400 hover:text-orange-500 rounded-full hover:bg-gray-100 transition-colors"
+                class="p-2 text-gray-400 hover:text-gray-900 transition-colors"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +188,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
+                    stroke-width="1.5"
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
@@ -196,12 +198,12 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
             <!-- Search Results Dropdown -->
             @if (searchQuery().length > 0) {
             <div
-              class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden max-h-[70vh] overflow-y-auto"
+              class="absolute top-full left-0 right-0 mt-2 bg-white shadow-xl border border-gray-200 overflow-hidden max-h-[70vh] overflow-y-auto"
             >
               @if (searchResults().length > 0) {
               <div class="p-2">
                 <div
-                  class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 py-2"
+                  class="text-xs font-bold text-gray-400 uppercase tracking-wider px-3 py-2"
                 >
                   Products
                 </div>
@@ -209,30 +211,30 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
                 <a
                   [routerLink]="['/product', product.id]"
                   (click)="closeSearch()"
-                  class="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors group"
+                  class="flex items-center gap-4 p-3 hover:bg-gray-50 transition-colors group"
                 >
-                  <div class="h-16 w-16 rounded-lg overflow-hidden bg-gray-100 shrink-0">
+                  <div class="h-16 w-16 overflow-hidden bg-gray-100 shrink-0 border border-gray-200">
                     <img
                       [src]="product.image"
                       [alt]="product.name"
                       class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   </div>
-                  <div>
+                  <div class="flex-1">
                     <h4
-                      class="font-medium text-gray-900 group-hover:text-orange-500 transition-colors"
+                      class="font-medium text-gray-900 group-hover:text-[#111] transition-colors"
                     >
                       {{ product.name }}
                     </h4>
-                    <p class="text-sm text-gray-500">{{ product.category }}</p>
-                    <p class="text-sm font-semibold text-gray-900 mt-1">\${{ product.price }}</p>
+                    <p class="text-xs text-gray-500 uppercase tracking-wide">{{ product.category }}</p>
+                    <p class="text-sm font-bold text-gray-900 mt-1">KES {{ product.price | number }}</p>
                   </div>
                 </a>
                 }
               </div>
               } @else {
               <div class="p-8 text-center text-gray-500">
-                <p>No results found for "{{ searchQuery() }}"</p>
+                <p class="text-sm">No results found for "{{ searchQuery() }}"</p>
               </div>
               }
             </div>
