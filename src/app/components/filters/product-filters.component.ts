@@ -6,137 +6,82 @@ import { DropdownComponent } from '../../shared/ui/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-product-filters',
-  standalone: true,
   imports: [CommonModule, FormsModule, DropdownComponent],
   template: `
-    <div class="flex flex-wrap items-center gap-6">
-      <!-- Categories Filter -->
-      <app-dropdown label="Categories" [isActive]="currentFilters().categories.length > 0">
-        <div class="space-y-2">
+    <div class="flex flex-wrap items-center gap-1.5">
+      <!-- Categories -->
+      <app-dropdown label="Category" [isActive]="currentFilters().categories.length > 0" width="sm">
+        <div class="space-y-0.5">
           @for (category of productService.categories(); track category) {
-          <label class="flex items-center gap-3 cursor-pointer group">
-            <div class="relative flex items-center">
+            <label class="flex items-center gap-1.5 cursor-pointer px-1.5 py-1 hover:bg-gray-50 text-[11px]">
               <input
                 type="checkbox"
                 [checked]="currentFilters().categories.includes(category)"
                 (change)="toggleCategory(category)"
-                class="peer h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600 transition-all"
+                class="h-3 w-3 border-gray-300 text-gray-900 focus:ring-0"
               />
-            </div>
-            <span class="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">
-              {{ category }}
-            </span>
-          </label>
+              <span class="text-gray-600">{{ category }}</span>
+            </label>
           }
         </div>
       </app-dropdown>
 
-      <!-- Colors Filter -->
-      <app-dropdown label="Colors" [isActive]="currentFilters().colors.length > 0">
-        <div class="grid grid-cols-4 gap-2">
+      <!-- Colors -->
+      <app-dropdown label="Color" [isActive]="currentFilters().colors.length > 0" width="sm">
+        <div class="grid grid-cols-5 gap-1">
           @for (color of productService.colors(); track color) {
-          <button
-            (click)="toggleColor(color)"
-            class="w-8 h-8 rounded-full border-2 transition-all hover:scale-110"
-            [style.backgroundColor]="color"
-            [class.border-indigo-600]="currentFilters().colors.includes(color)"
-            [class.border-transparent]="!currentFilters().colors.includes(color)"
-            [title]="color"
-          >
-            @if (currentFilters().colors.includes(color)) {
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 text-white mx-auto drop-shadow-md"
-              viewBox="0 0 20 20"
-              fill="currentColor"
+            <button
+              (click)="toggleColor(color)"
+              class="w-5 h-5 border transition-all"
+              [style.backgroundColor]="color"
+              [class.border-gray-900]="currentFilters().colors.includes(color)"
+              [class.border-gray-200]="!currentFilters().colors.includes(color)"
+              [class.ring-1]="currentFilters().colors.includes(color)"
+              [class.ring-gray-900]="currentFilters().colors.includes(color)"
+              [title]="color"
             >
-              <path
-                fill-rule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            }
-          </button>
+              @if (currentFilters().colors.includes(color)) {
+                <svg class="h-2.5 w-2.5 text-white mx-auto" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              }
+            </button>
           }
         </div>
       </app-dropdown>
 
-      <!-- Price Filter -->
-      <app-dropdown label="Price" [isActive]="isPriceActive()">
-        <div class="space-y-4 min-w-[200px]">
-          <div class="flex items-center justify-between text-sm text-slate-600">
-            <span>Range</span>
-            <span class="font-medium text-slate-900">
-              \${{ currentFilters().minPrice || productService.priceRange().min }} - \${{
-                currentFilters().maxPrice || productService.priceRange().max
-              }}
-            </span>
+      <!-- Price -->
+      <app-dropdown label="Price" [isActive]="isPriceActive()" width="sm">
+        <div class="space-y-2">
+          <div class="flex gap-1.5">
+            <input
+              type="number"
+              [ngModel]="currentFilters().minPrice"
+              (ngModelChange)="updateMinPrice($event)"
+              class="w-full px-1.5 py-1 text-[11px] border border-gray-200 focus:border-gray-400 outline-none"
+              placeholder="Min"
+            />
+            <input
+              type="number"
+              [ngModel]="currentFilters().maxPrice"
+              (ngModelChange)="updateMaxPrice($event)"
+              class="w-full px-1.5 py-1 text-[11px] border border-gray-200 focus:border-gray-400 outline-none"
+              placeholder="Max"
+            />
           </div>
-
-          <div class="flex gap-4">
-            <div class="space-y-1">
-              <label class="text-xs text-slate-500">Min</label>
-              <input
-                type="number"
-                [min]="productService.priceRange().min"
-                [max]="currentFilters().maxPrice || productService.priceRange().max"
-                [ngModel]="currentFilters().minPrice"
-                (ngModelChange)="updateMinPrice($event)"
-                class="w-full px-2 py-1 text-sm border border-slate-200 rounded-md focus:ring-1 focus:ring-indigo-500 outline-none"
-                placeholder="Min"
-              />
-            </div>
-            <div class="space-y-1">
-              <label class="text-xs text-slate-500">Max</label>
-              <input
-                type="number"
-                [min]="currentFilters().minPrice || productService.priceRange().min"
-                [max]="productService.priceRange().max"
-                [ngModel]="currentFilters().maxPrice"
-                (ngModelChange)="updateMaxPrice($event)"
-                class="w-full px-2 py-1 text-sm border border-slate-200 rounded-md focus:ring-1 focus:ring-indigo-500 outline-none"
-                placeholder="Max"
-              />
-            </div>
-          </div>
-
           <button
             (click)="resetPrice()"
-            class="w-full py-1.5 text-xs font-medium text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors"
+            class="w-full py-1 text-[10px] text-gray-400 hover:text-gray-600 transition-colors"
           >
-            Reset Price
+            Reset
           </button>
         </div>
       </app-dropdown>
-
-      <!-- Clear All -->
-      @if (hasActiveFilters()) {
-      <button
-        (click)="clearAll()"
-        class="text-sm text-red-500 hover:text-red-600 font-medium transition-colors flex items-center gap-1"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          />
-        </svg>
-        Clear filters
-      </button>
-      }
     </div>
   `,
 })
 export class ProductFiltersComponent {
   productService = inject(ProductService);
-
   filterChange = output<FilterCriteria>();
 
   currentFilters = signal<FilterCriteria>({
