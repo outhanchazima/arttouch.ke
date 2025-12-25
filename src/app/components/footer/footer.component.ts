@@ -23,11 +23,12 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
 
           <!-- Service -->
           <div>
-            <h4 class="text-sm font-bold text-white mb-6">Service</h4>
+            <h4 class="text-sm font-bold text-white mb-6">Services</h4>
             <ul class="space-y-4 text-xs text-gray-400">
-              <li><a routerLink="/store" class="hover:text-white transition-colors">School Supply</a></li>
-              <li><a routerLink="/store" class="hover:text-white transition-colors">Home Learning</a></li>
-              <li><a routerLink="/store" class="hover:text-white transition-colors">Special Needs</a></li>
+              <li><a routerLink="/services/school-supply" class="hover:text-white transition-colors">School Supply</a></li>
+              <li><a routerLink="/services/home-learning" class="hover:text-white transition-colors">Home Learning</a></li>
+              <li><a routerLink="/services/special-needs" class="hover:text-white transition-colors">Special Needs</a></li>
+              <li><a routerLink="/services" class="hover:text-white transition-colors">All Services</a></li>
             </ul>
           </div>
 
