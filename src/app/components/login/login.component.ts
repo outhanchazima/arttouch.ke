@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { email, Field, form, required } from '@angular/forms/signals';
 import { RouterLink } from '@angular/router';
@@ -7,6 +7,7 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { CardComponent } from '../../shared/ui/card/card.component';
 import { FormFieldComponent } from '../../shared/ui/form-field/form-field.component';
 import { InputDirective } from '../../shared/ui/input/input.directive';
+import { OtpInputComponent } from '../../shared/ui/otp-input/otp-input.component';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
     CardComponent,
     FormFieldComponent,
     InputDirective,
+    OtpInputComponent,
   ],
   template: `
     <div
@@ -37,7 +39,7 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
           <!-- Login Method Toggle -->
           <div class="bg-gray-100 p-1 rounded-none flex mb-8">
             <button
-              (click)="loginMethod.set('password')"
+              (click)="switchToPassword()"
               class="flex-1 py-2 text-sm font-medium rounded-none transition-all duration-300"
               [class.bg-[#111]]="loginMethod() === 'password'"
               [class.text-white]="loginMethod() === 'password'"
@@ -47,7 +49,7 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
               Password
             </button>
             <button
-              (click)="loginMethod.set('otp')"
+              (click)="switchToOtp()"
               class="flex-1 py-2 text-sm font-medium rounded-none transition-all duration-300"
               [class.bg-[#111]]="loginMethod() === 'otp'"
               [class.text-white]="loginMethod() === 'otp'"
@@ -61,7 +63,8 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
           <!-- Form -->
           <form class="space-y-6" (submit)="onSubmit($event)">
             <div class="space-y-4">
-              <!-- Email -->
+              <!-- Email (shown when not in OTP verify step) -->
+              @if (!otpSent()) {
               <app-form-field
                 label="Email Address"
                 for="email"
@@ -80,6 +83,7 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
                   placeholder="Enter your email address"
                 />
               </app-form-field>
+              }
 
               @if (loginMethod() === 'password') {
               <!-- Password -->
@@ -122,22 +126,65 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
                 </div>
               </div>
               } @else {
-              <!-- OTP Input -->
-              <app-form-field label="OTP Code" for="otp">
-                <input
-                  id="otp"
-                  type="text"
-                  appInput
-                  [field]="loginForm.otp"
-                  placeholder="Enter OTP"
-                />
-              </app-form-field>
+              <!-- OTP Flow -->
+              @if (otpSent()) {
+              <!-- OTP Verify Step -->
+              <div class="space-y-4">
+                <div class="text-center mb-4">
+                  <p class="text-sm text-gray-600">
+                    We've sent a 6-digit code to
+                  </p>
+                  <p class="font-medium text-gray-900">{{ loginModel().email }}</p>
+                </div>
+
+                <app-form-field label="Enter OTP Code">
+                  <app-otp-input 
+                    #otpInputRef
+                    [(value)]="otpValue" 
+                    [hasError]="otpError()"
+                  />
+                </app-form-field>
+
+                @if (otpError()) {
+                <p class="text-sm text-red-500 text-center">Invalid OTP. Please try again.</p>
+                }
+
+                <button 
+                  type="button"
+                  (click)="resendOtp()"
+                  class="w-full text-center text-sm text-gray-500 hover:text-gray-900 underline-offset-4 hover:underline"
+                  [disabled]="resendCooldown() > 0"
+                >
+                  @if (resendCooldown() > 0) {
+                    Resend in {{ resendCooldown() }}s
+                  } @else {
+                    Resend OTP
+                  }
+                </button>
+              </div>
+              }
               }
             </div>
 
             <app-button type="submit" [disabled]="!isValid()" [fullWidth]="true">
-              {{ loginMethod() === 'password' ? 'Sign In' : 'Send OTP' }}
+              @if (loginMethod() === 'password') {
+                Sign In
+              } @else if (otpSent()) {
+                Verify OTP
+              } @else {
+                Send OTP
+              }
             </app-button>
+
+            @if (otpSent()) {
+            <button 
+              type="button"
+              (click)="backToEmail()"
+              class="w-full text-center text-sm text-gray-500 hover:text-gray-900"
+            >
+              ← Back to email
+            </button>
+            }
 
             <div class="text-center text-sm">
               <span class="text-gray-500">Don't have an account? </span>
@@ -188,7 +235,13 @@ import { InputDirective } from '../../shared/ui/input/input.directive';
   `,
 })
 export class LoginComponent {
+  @ViewChild('otpInputRef') otpInputRef?: OtpInputComponent;
+
   loginMethod = signal<'password' | 'otp'>('password');
+  otpSent = signal(false);
+  otpValue = signal('');
+  otpError = signal(false);
+  resendCooldown = signal(0);
 
   loginModel = signal({
     email: '',
@@ -203,6 +256,26 @@ export class LoginComponent {
     required(s.password);
   });
 
+  switchToPassword() {
+    this.loginMethod.set('password');
+    this.otpSent.set(false);
+    this.otpValue.set('');
+    this.otpError.set(false);
+  }
+
+  switchToOtp() {
+    this.loginMethod.set('otp');
+    this.otpSent.set(false);
+    this.otpValue.set('');
+    this.otpError.set(false);
+  }
+
+  backToEmail() {
+    this.otpSent.set(false);
+    this.otpValue.set('');
+    this.otpError.set(false);
+  }
+
   isValid() {
     const method = this.loginMethod();
     const emailValid = this.loginForm.email().valid();
@@ -210,12 +283,73 @@ export class LoginComponent {
     if (method === 'password') {
       return emailValid && this.loginForm.password().valid();
     } else {
+      if (this.otpSent()) {
+        return this.otpValue().length === 6;
+      }
       return emailValid;
     }
   }
 
   onSubmit(event: Event) {
     event.preventDefault();
-    console.log('Login submitted', this.loginModel());
+
+    if (this.loginMethod() === 'otp') {
+      if (!this.otpSent()) {
+        // Send OTP
+        this.sendOtp();
+      } else {
+        // Verify OTP
+        this.verifyOtp();
+      }
+    } else {
+      // Password login
+      console.log('Password login submitted', this.loginModel());
+    }
+  }
+
+  sendOtp() {
+    console.log('Sending OTP to', this.loginModel().email);
+    this.otpSent.set(true);
+    this.startResendCooldown();
+    
+    // Focus the OTP input after a short delay
+    setTimeout(() => {
+      this.otpInputRef?.focus();
+    }, 100);
+  }
+
+  verifyOtp() {
+    const otp = this.otpValue();
+    console.log('Verifying OTP:', otp);
+    
+    // Simulate OTP verification (replace with actual API call)
+    if (otp === '123456') {
+      console.log('OTP verified successfully!');
+      this.otpError.set(false);
+    } else {
+      this.otpError.set(true);
+      this.otpInputRef?.clear();
+    }
+  }
+
+  resendOtp() {
+    if (this.resendCooldown() > 0) return;
+    
+    console.log('Resending OTP to', this.loginModel().email);
+    this.startResendCooldown();
+    this.otpInputRef?.clear();
+  }
+
+  private startResendCooldown() {
+    this.resendCooldown.set(30);
+    const interval = setInterval(() => {
+      this.resendCooldown.update((v) => {
+        if (v <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return v - 1;
+      });
+    }, 1000);
   }
 }
