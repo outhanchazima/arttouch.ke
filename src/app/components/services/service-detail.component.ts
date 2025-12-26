@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
 import { FormFieldComponent } from '../../shared/ui/form-field/form-field.component';
 import { InputDirective } from '../../shared/ui/input/input.directive';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
+import { SeoService } from '../../services/seo.service';
 import { Service, ServiceRequest, ServiceRequestService } from '../../services/service-request.service';
 
 @Component({
@@ -318,9 +319,10 @@ import { Service, ServiceRequest, ServiceRequestService } from '../../services/s
     }
   `,
 })
-export class ServiceDetailComponent {
+export class ServiceDetailComponent implements OnDestroy {
   private route = inject(ActivatedRoute);
   private serviceRequestService = inject(ServiceRequestService);
+  private seoService = inject(SeoService);
 
   service = signal<Service | undefined>(undefined);
   submitted = signal(false);
@@ -348,8 +350,38 @@ export class ServiceDetailComponent {
       if (id) {
         const service = this.serviceRequestService.getServiceById(id);
         this.service.set(service);
+
+        if (service) {
+          this.updateSeo(service);
+        }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.removeStructuredData();
+  }
+
+  private updateSeo(service: Service): void {
+    this.seoService.updateTags({
+      title: `${service.title} Service`,
+      description: service.description,
+      keywords: `${service.title}, educational services Kenya, ${service.title.toLowerCase()} Kenya`,
+      ogTitle: `${service.title} Service - ArtTouch Kenya`,
+      ogDescription: service.description,
+      ogImage: service.image,
+      ogUrl: `https://arttouch.ke/services/${service.id}`,
+      canonicalUrl: `https://arttouch.ke/services/${service.id}`,
+      type: 'website',
+    });
+
+    // Add breadcrumb structured data
+    const breadcrumbSchema = this.seoService.generateBreadcrumbStructuredData([
+      { name: 'Home', url: 'https://arttouch.ke/' },
+      { name: 'Services', url: 'https://arttouch.ke/services' },
+      { name: service.title, url: `https://arttouch.ke/services/${service.id}` },
+    ]);
+    this.seoService.addStructuredData(breadcrumbSchema);
   }
 
   getHeroTitle(): string {

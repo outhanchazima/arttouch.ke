@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ContainerComponent } from '../../shared/ui/container/container.component';
+import { SeoService } from '../../services/seo.service';
 import { ServiceRequestService } from '../../services/service-request.service';
 
 @Component({
@@ -102,10 +103,22 @@ import { ServiceRequestService } from '../../services/service-request.service';
     </section>
   `,
 })
-export class ServicesComponent {
+export class ServicesComponent implements OnInit {
   private serviceRequestService = inject(ServiceRequestService);
+  private seoService = inject(SeoService);
 
   services = this.serviceRequestService.getServices();
+
+  ngOnInit(): void {
+    this.seoService.updateTags({
+      title: 'Our Services',
+      description: 'Explore educational services from ArtTouch Kenya. School supply packages, home learning kits, and specialized resources for children with special needs.',
+      keywords: 'educational services Kenya, school supplies, home learning, special needs resources, bulk orders, curriculum materials',
+      ogUrl: 'https://arttouch.ke/services',
+      canonicalUrl: 'https://arttouch.ke/services',
+      type: 'website',
+    });
+  }
 
   benefits = [
     {

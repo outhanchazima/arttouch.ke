@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ContainerComponent } from '../../shared/ui/container/container.component';
 import { BlogPost, BlogService } from '../../services/blog.service';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-blog-post',
@@ -174,9 +175,10 @@ import { BlogPost, BlogService } from '../../services/blog.service';
     }
   `],
 })
-export class BlogPostComponent {
+export class BlogPostComponent implements OnDestroy {
   private route = inject(ActivatedRoute);
   private blogService = inject(BlogService);
+  private seoService = inject(SeoService);
 
   post = signal<BlogPost | undefined>(undefined);
   relatedPosts = signal<BlogPost[]>([]);
@@ -190,8 +192,39 @@ export class BlogPostComponent {
         
         if (post) {
           this.relatedPosts.set(this.blogService.getRelatedPosts(slug));
+          this.updateSeo(post);
         }
       }
     });
+  }
+
+  private updateSeo(post: BlogPost): void {
+    this.seoService.updateTags({
+      title: post.title,
+      description: post.excerpt,
+      keywords: post.tags.join(', '),
+      ogTitle: post.title,
+      ogDescription: post.excerpt,
+      ogImage: post.image,
+      ogUrl: `https://arttouch.ke/blog/${post.slug}`,
+      canonicalUrl: `https://arttouch.ke/blog/${post.slug}`,
+      type: 'article',
+      author: post.author.name,
+      publishedTime: new Date(post.publishedAt).toISOString(),
+    });
+
+    // Add article structured data
+    const articleSchema = this.seoService.generateArticleStructuredData({
+      title: post.title,
+      description: post.excerpt,
+      image: post.image,
+      author: post.author.name,
+      publishedDate: new Date(post.publishedAt).toISOString(),
+    });
+    this.seoService.addStructuredData(articleSchema);
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.removeStructuredData();
   }
 }

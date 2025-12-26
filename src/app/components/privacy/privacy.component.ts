@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ContainerComponent } from '../../shared/ui/container/container.component';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-privacy',
@@ -61,7 +62,19 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
     </section>
   `,
 })
-export class PrivacyComponent {
+export class PrivacyComponent implements OnInit {
+  private seoService = inject(SeoService);
+
+  ngOnInit(): void {
+    this.seoService.updateTags({
+      title: 'Privacy Policy',
+      description: 'Learn how ArtTouch Kenya collects, uses, and protects your personal information. Read our privacy policy for details on data handling.',
+      keywords: 'privacy policy, data protection, ArtTouch Kenya, customer privacy',
+      ogUrl: 'https://arttouch.ke/privacy',
+      canonicalUrl: 'https://arttouch.ke/privacy',
+    });
+  }
+
   sections = [
     {
       title: '1. Information We Collect',

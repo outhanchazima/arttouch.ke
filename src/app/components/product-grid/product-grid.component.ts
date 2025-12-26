@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FilterCriteria, ProductService, SortOption } from '../../services/product.service';
+import { SeoService } from '../../services/seo.service';
 import { ContainerComponent } from '../../shared/ui/container/container.component';
 import { PaginationComponent } from '../../shared/ui/pagination/pagination.component';
 import { ProductFiltersComponent } from '../filters/product-filters.component';
@@ -245,8 +246,20 @@ import { ProductCardComponent } from '../product-card/product-card.component';
     .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
   `],
 })
-export class ProductGridComponent {
+export class ProductGridComponent implements OnInit {
   private productService = inject(ProductService);
+  private seoService = inject(SeoService);
+
+  ngOnInit(): void {
+    this.seoService.updateTags({
+      title: 'Shop Educational Resources',
+      description: 'Browse our complete collection of Montessori and ECDE educational resources. Quality learning materials, toys, and classroom supplies in Kenya.',
+      keywords: 'shop educational resources, Montessori toys Kenya, ECDE materials, learning toys, classroom supplies Nairobi',
+      ogUrl: 'https://arttouch.ke/products',
+      canonicalUrl: 'https://arttouch.ke/products',
+      type: 'website',
+    });
+  }
 
   filterCriteria = signal<FilterCriteria>({
     categories: [],

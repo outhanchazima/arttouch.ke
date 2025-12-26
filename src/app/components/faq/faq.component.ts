@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContainerComponent } from '../../shared/ui/container/container.component';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-faq',
@@ -73,8 +74,27 @@ import { ContainerComponent } from '../../shared/ui/container/container.componen
     </section>
   `,
 })
-export class FaqComponent {
+export class FaqComponent implements OnInit {
+  private seoService = inject(SeoService);
+
   openItem = signal<string | null>(null);
+
+  ngOnInit(): void {
+    this.seoService.updateTags({
+      title: 'Frequently Asked Questions',
+      description: 'Find answers to common questions about ArtTouch Kenya products, shipping, returns, payment methods, and more.',
+      keywords: 'FAQ, frequently asked questions, ArtTouch Kenya, shipping Kenya, returns policy, payment methods',
+      ogUrl: 'https://arttouch.ke/faq',
+      canonicalUrl: 'https://arttouch.ke/faq',
+    });
+
+    // Generate FAQ structured data for rich snippets
+    const allFaqs = this.faqCategories.flatMap(cat => 
+      cat.items.map(item => ({ question: item.question, answer: item.answer }))
+    );
+    const faqSchema = this.seoService.generateFAQStructuredData(allFaqs);
+    this.seoService.addStructuredData(faqSchema);
+  }
 
   toggleItem(question: string) {
     if (this.openItem() === question) {

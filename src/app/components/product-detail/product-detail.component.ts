@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { Product, ProductService } from '../../services/product.service';
+import { SeoService } from '../../services/seo.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { BadgeComponent } from '../../shared/ui/badge/badge.component';
 import { ContainerComponent } from '../../shared/ui/container/container.component';
@@ -208,11 +209,12 @@ import { ProductCardComponent } from '../product-card/product-card.component';
     </section>
   `,
 })
-export class ProductDetailComponent {
+export class ProductDetailComponent implements OnDestroy {
   private route = inject(ActivatedRoute);
   private cartService = inject(CartService);
   private wishlistService = inject(WishlistService);
   private productService = inject(ProductService);
+  private seoService = inject(SeoService);
 
   protected Math = Math;
 
@@ -252,11 +254,16 @@ export class ProductDetailComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    this.seoService.removeStructuredData();
+  }
+
   private loadProduct(id: number) {
     const product = this.productService.getProductById(id);
 
     if (product) {
       this.product.set(product);
+      this.updateSeo(product);
 
       // Set images
       if (product.images && product.images.length > 0) {
@@ -274,6 +281,40 @@ export class ProductDetailComponent {
 
       this.loadRelatedProducts(product.category);
     }
+  }
+
+  private updateSeo(product: Product): void {
+    this.seoService.updateTags({
+      title: product.name,
+      description: product.description || `Shop ${product.name} in ${product.category} category. High quality educational resources at ArtTouch Kenya.`,
+      keywords: `${product.name}, ${product.category}, educational toys Kenya, Montessori materials`,
+      ogTitle: product.name,
+      ogDescription: product.description || `Shop ${product.name} - quality educational resources`,
+      ogImage: product.image,
+      ogUrl: `https://arttouch.ke/products/${product.id}`,
+      canonicalUrl: `https://arttouch.ke/products/${product.id}`,
+      type: 'product',
+    });
+
+    // Add product structured data for rich snippets
+    const productSchema = this.seoService.generateProductStructuredData({
+      name: product.name,
+      description: product.description || '',
+      price: product.price,
+      image: product.image,
+      category: product.category,
+      rating: product.rating,
+    });
+    this.seoService.addStructuredData(productSchema);
+
+    // Add breadcrumb structured data
+    const breadcrumbSchema = this.seoService.generateBreadcrumbStructuredData([
+      { name: 'Home', url: 'https://arttouch.ke/' },
+      { name: 'Products', url: 'https://arttouch.ke/products' },
+      { name: product.category, url: `https://arttouch.ke/products?category=${product.category}` },
+      { name: product.name, url: `https://arttouch.ke/products/${product.id}` },
+    ]);
+    this.seoService.addStructuredData(breadcrumbSchema);
   }
 
   private loadRelatedProducts(category: string) {

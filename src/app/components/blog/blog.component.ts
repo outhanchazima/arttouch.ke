@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ContainerComponent } from '../../shared/ui/container/container.component';
 import { BlogService, BlogCategory } from '../../services/blog.service';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-blog',
@@ -171,14 +172,26 @@ import { BlogService, BlogCategory } from '../../services/blog.service';
     </section>
   `,
 })
-export class BlogComponent {
+export class BlogComponent implements OnInit {
   private blogService = inject(BlogService);
+  private seoService = inject(SeoService);
 
   posts = this.blogService.getPosts();
   categories = this.blogService.getCategories();
   selectedCategory = signal<string | null>(null);
 
   featuredPost = signal(this.blogService.getFeaturedPosts()[0] || null);
+
+  ngOnInit(): void {
+    this.seoService.updateTags({
+      title: 'Blog - Insights & Resources',
+      description: 'Expert advice, tips, and inspiration for parents, educators, and caregivers on early childhood development, Montessori education, and special needs resources.',
+      keywords: 'education blog, parenting tips, Montessori education, ECDE resources, early childhood development, Kenya education',
+      ogUrl: 'https://arttouch.ke/blog',
+      canonicalUrl: 'https://arttouch.ke/blog',
+      type: 'website',
+    });
+  }
 
   filteredPosts = () => {
     const category = this.selectedCategory();

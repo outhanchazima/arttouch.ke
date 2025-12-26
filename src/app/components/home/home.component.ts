@@ -1,9 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ContainerComponent } from '../../shared/ui/container/container.component';
 import { ProductService } from '../../services/product.service';
 import { BadgeComponent } from '../../shared/ui/badge/badge.component';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-home',
@@ -331,11 +332,26 @@ import { BadgeComponent } from '../../shared/ui/badge/badge.component';
     </section>
   `
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   private productService = inject(ProductService);
+  private seoService = inject(SeoService);
   
   // Get first 4 products for New Arrivals
   readonly newArrivals = signal(this.productService.getProducts()().slice(0, 4));
+
+  ngOnInit(): void {
+    this.seoService.updateTags({
+      title: 'Montessori & ECDE Educational Resources',
+      description: 'Quality Montessori & ECDE educational resources in Kenya. Shop learning materials, toys, and classroom supplies for early childhood development.',
+      keywords: 'Montessori Kenya, ECDE resources, educational toys Kenya, learning materials, special needs education, Nairobi',
+      ogUrl: 'https://arttouch.ke/',
+      type: 'website',
+    });
+
+    // Add local business structured data
+    const businessData = this.seoService.generateLocalBusinessStructuredData();
+    this.seoService.addStructuredData(businessData);
+  }
 
   readonly testimonials = [
     {
