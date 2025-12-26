@@ -41,7 +41,7 @@ import { WishlistService } from '../../services/wishlist.service';
             title="Add to Cart"
           >
             <svg
-              class="h-4 w-4"
+              class="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -62,7 +62,7 @@ import { WishlistService } from '../../services/wishlist.service';
             title="Add to Wishlist"
           >
             <svg
-              class="h-4 w-4"
+              class="h-5 w-5"
               [attr.fill]="isInWishlist() ? 'currentColor' : 'none'"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -135,7 +135,7 @@ import { WishlistService } from '../../services/wishlist.service';
             class="p-1 bg-white/90 text-gray-700 hover:bg-gray-900 hover:text-white transition-all active:scale-90"
           >
             <svg
-              class="h-3 w-3"
+              class="h-4 w-4"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -154,7 +154,7 @@ import { WishlistService } from '../../services/wishlist.service';
             [class.text-red-500]="isInWishlist()"
           >
             <svg
-              class="h-3 w-3"
+              class="h-4 w-4"
               [attr.fill]="isInWishlist() ? 'currentColor' : 'none'"
               viewBox="0 0 24 24"
               stroke="currentColor"
