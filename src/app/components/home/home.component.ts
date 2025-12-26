@@ -341,9 +341,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.seoService.updateTags({
-      title: 'Montessori & ECDE Educational Resources',
-      description: 'Quality Montessori & ECDE educational resources in Kenya. Shop learning materials, toys, and classroom supplies for early childhood development.',
-      keywords: 'Montessori Kenya, ECDE resources, educational toys Kenya, learning materials, special needs education, Nairobi',
+      title: 'CBC & Montessori Learning Materials Kenya',
+      description: 'Shop quality CBC curriculum materials, ECDE educational toys & Montessori resources in Kenya. KICD approved books, sensory toys, special needs materials. Free delivery Nairobi.',
+      keywords: 'CBC learning materials Kenya, ECDE educational toys, Montessori toys Nairobi, KICD approved books, preschool materials Kenya, nursery school supplies, classroom teaching aids, sensory toys, special needs education Kenya, early childhood development',
       ogUrl: 'https://arttouch.ke/',
       type: 'website',
     });

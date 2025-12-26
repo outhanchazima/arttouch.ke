@@ -25,10 +25,27 @@ export class SeoService {
   private metaService = inject(Meta);
 
   private readonly siteName = 'ArtTouch Kenya';
+  
+  // Optimized description with high-ranking keywords
   private readonly defaultDescription =
-    'Quality Montessori & ECDE educational resources in Kenya. Shop learning materials, toys, and classroom supplies for early childhood development.';
+    'Shop quality CBC & Montessori learning materials in Kenya. ECDE educational toys, KICD approved curriculum resources, classroom supplies, sensory toys & special needs materials. Free delivery Nairobi.';
+  
+  // Research-backed keywords: Kenya focus + international educational toy terms
   private readonly defaultKeywords =
-    'Montessori Kenya, ECDE resources, educational toys Kenya, learning materials, classroom supplies, early childhood development, special needs education';
+    // Primary Kenya market keywords
+    'CBC learning materials Kenya, ECDE resources Kenya, Montessori toys Nairobi, educational toys Kenya, KICD approved books, ' +
+    'preschool learning materials, nursery school supplies Kenya, classroom teaching aids, sensory toys Kenya, ' +
+    'special needs education materials, early childhood development toys, pre-primary learning resources, ' +
+    'Competency Based Curriculum materials, PP1 PP2 learning materials, Grade 1 2 3 CBC books, ' +
+    // International educational toy keywords
+    'Montessori materials online, educational toys for toddlers, wooden learning toys, STEM toys for kids, ' +
+    'best educational toys 2024, early learning toys, developmental toys children, fine motor skills toys, ' +
+    'educational games preschool, alphabet learning toys, counting toys toddlers, sensory play materials, ' +
+    'classroom resources teachers, special needs toys, autism friendly toys, occupational therapy toys, ' +
+    // African market keywords
+    'educational toys Africa, learning materials East Africa, Montessori supplies Africa, ' +
+    'school supplies wholesale Africa, bulk educational materials, teacher resources Africa';
+  
   private readonly defaultImage = 'https://arttouch.ke/assets/og-image.jpg';
   private readonly siteUrl = 'https://arttouch.ke';
 

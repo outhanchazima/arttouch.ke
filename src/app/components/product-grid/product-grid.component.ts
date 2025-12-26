@@ -252,9 +252,9 @@ export class ProductGridComponent implements OnInit {
 
   ngOnInit(): void {
     this.seoService.updateTags({
-      title: 'Shop Educational Resources',
-      description: 'Browse our complete collection of Montessori and ECDE educational resources. Quality learning materials, toys, and classroom supplies in Kenya.',
-      keywords: 'shop educational resources, Montessori toys Kenya, ECDE materials, learning toys, classroom supplies Nairobi',
+      title: 'Shop CBC & Montessori Learning Materials',
+      description: 'Browse our complete collection of CBC curriculum materials, Montessori toys & ECDE educational resources in Kenya. KICD approved, STEM toys, sensory materials.',
+      keywords: 'buy educational toys Kenya, CBC books online, Montessori materials Nairobi, ECDE resources shop, STEM toys Kenya, classroom supplies, wooden toys, puzzles Kenya, learning games',
       ogUrl: 'https://arttouch.ke/products',
       canonicalUrl: 'https://arttouch.ke/products',
       type: 'website',
