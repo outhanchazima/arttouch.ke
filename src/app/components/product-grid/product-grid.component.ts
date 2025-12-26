@@ -278,11 +278,12 @@ export class ProductGridComponent {
       return 'grid-cols-1';
     }
     const cols = this.gridColumns();
+    // Mobile shows 2 columns for similar grid sizes
     switch (cols) {
-      case 3: return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
-      case 4: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4';
-      case 5: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5';
-      default: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4';
+      case 3: return 'grid-cols-2 sm:grid-cols-2 lg:grid-cols-3';
+      case 4: return 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4';
+      case 5: return 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5';
+      default: return 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4';
     }
   });
 
