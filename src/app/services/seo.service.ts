@@ -232,18 +232,20 @@ export class SeoService {
       description: this.defaultDescription,
       url: this.siteUrl,
       telephone: '+254723709005',
-      email: 'hello@arttouch.ke',
+      email: 'info@arttouchke.com',
       address: {
         '@type': 'PostalAddress',
-        addressLocality: 'Nairobi',
+        streetAddress: 'Ansex Jacaranda Road',
+        addressLocality: 'Eldoret',
+        addressRegion: 'Uasin Gishu',
         addressCountry: 'KE',
       },
       geo: {
         '@type': 'GeoCoordinates',
-        latitude: -1.2921,
-        longitude: 36.8219,
+        latitude: 0.5143,
+        longitude: 35.2698,
       },
-      openingHours: 'Mo-Fr 09:00-18:00',
+      openingHours: 'Mo-Fr 08:00-18:00, Sa 09:00-16:00',
       priceRange: 'KES 100 - KES 50000',
     };
 

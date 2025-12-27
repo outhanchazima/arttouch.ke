@@ -165,19 +165,19 @@ export class ContactComponent {
     {
       icon: '📍',
       label: 'Address',
-      value: 'Westlands, Nairobi',
+      value: 'Annex Jacaranda Road, Eldoret',
       secondary: 'Kenya',
     },
     {
       icon: '📞',
       label: 'Phone',
-      value: '+254 712 345 678',
+      value: '+254 723 709 005',
       secondary: 'Mon-Sat, 8am-6pm EAT',
     },
     {
       icon: '✉️',
       label: 'Email',
-      value: 'hello@arttouch.ke',
+      value: 'info@arttouchke.com',
       secondary: 'We reply within 24 hours',
     },
   ];

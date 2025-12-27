@@ -157,7 +157,7 @@ export class PrivacyComponent implements OnInit {
     {
       title: '9. Contact Us',
       content: [
-        'If you have questions about this privacy policy or our data practices, please contact us at hello@arttouch.ke or through our contact page.',
+        'If you have questions about this privacy policy or our data practices, please contact us at info@arttouchke.com or through our contact page.',
       ],
     },
   ];
